@@ -1,0 +1,32 @@
+# Who reviews what. GitHub asks the listed owners to review any pull request
+# that touches their files (later lines win over earlier ones).
+# Note: on GitHub Free this only takes effect once the repo is public.
+
+# Default: anyone on the team
+*                         @N-thnI @Osuochasam @Abd-Standard
+
+# Dev 1 (Sam): contracts and testnet setup
+/contract/                @Osuochasam
+/token/                   @Osuochasam
+/scripts/                 @Osuochasam
+/deployments/             @Osuochasam
+
+# Dev 2 (Nathan): backend and AI judges
+/shared/                  @N-thnI
+/judge/                   @N-thnI
+/agents/                  @N-thnI
+/receipts/                @N-thnI
+# Pricing test vectors are shared by the Rust and TypeScript implementations
+/shared/test-vectors.json @N-thnI @Osuochasam
+
+# Dev 3 (Abd): dashboard, simulation and story
+/web/                     @Abd-Standard
+/sim/                     @Abd-Standard
+/README.md                @Abd-Standard
+
+# Team-wide rules: changes need the whole team's attention
+/docs/SPEC.md             @N-thnI @Osuochasam @Abd-Standard
+/MECHANISM.md             @N-thnI @Osuochasam @Abd-Standard
+/CLAUDE.md                @N-thnI @Osuochasam @Abd-Standard
+/AGENTS.md                @N-thnI @Osuochasam @Abd-Standard
+/.github/                 @N-thnI @Osuochasam @Abd-Standard
