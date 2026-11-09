@@ -47,11 +47,44 @@ export function parseTap(output: string): Map<string, boolean> {
   return results;
 }
 
+/** How long to wait for output pipes to close after a kill before giving up on them. */
+const KILL_GRACE_MS = 5_000;
+
+/** Kill the process AND everything it started (npm starts node, node starts test workers). */
+function killTree(pid: number | undefined): void {
+  if (!pid) return;
+  if (process.platform === "win32") {
+    spawn("taskkill", ["/pid", String(pid), "/T", "/F"], { windowsHide: true }).on("error", () => {});
+    return;
+  }
+  try {
+    process.kill(-pid, "SIGKILL"); // the whole process group (child was spawned detached)
+  } catch {
+    try {
+      process.kill(pid, "SIGKILL");
+    } catch {
+      // already gone
+    }
+  }
+}
+
 function run(cmd: string, args: string[], cwd: string, timeoutMs: number, input?: string): Promise<{ code: number | null; out: string; timedOut: boolean }> {
   return new Promise((resolvePromise) => {
-    const child = spawn(cmd, args, { cwd, env: sandboxEnv(), shell: false, windowsHide: true });
+    // detached on POSIX = own process group, so a timeout can kill grandchildren too.
+    const child = spawn(cmd, args, { cwd, env: sandboxEnv(), shell: false, windowsHide: true, detached: process.platform !== "win32" });
     let out = "";
     let timedOut = false;
+    let settled = false;
+    let grace: NodeJS.Timeout | undefined;
+    const finish = (code: number | null) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      clearTimeout(grace);
+      child.stdout.destroy();
+      child.stderr.destroy();
+      resolvePromise({ code, out: out.slice(0, MAX_OUTPUT), timedOut });
+    };
     const add = (b: Buffer) => {
       if (out.length < MAX_OUTPUT) out += b.toString("utf8");
     };
@@ -59,16 +92,18 @@ function run(cmd: string, args: string[], cwd: string, timeoutMs: number, input?
     child.stderr.on("data", add);
     const timer = setTimeout(() => {
       timedOut = true;
-      if (process.platform === "win32" && child.pid) spawn("taskkill", ["/pid", String(child.pid), "/T", "/F"], { windowsHide: true });
-      else child.kill("SIGKILL");
+      killTree(child.pid);
+      // If a process survives and holds the pipes open, never wait forever.
+      grace = setTimeout(() => {
+        out += "\n[judge] output pipes still open after kill; abandoned";
+        finish(null);
+      }, KILL_GRACE_MS);
     }, timeoutMs);
     child.on("error", (e) => {
       out += `\n[spawn error] ${e.message}`;
+      finish(null);
     });
-    child.on("close", (code) => {
-      clearTimeout(timer);
-      resolvePromise({ code, out: out.slice(0, MAX_OUTPUT), timedOut });
-    });
+    child.on("close", (code) => finish(code));
     if (input !== undefined) child.stdin.end(input);
     else child.stdin.end();
   });

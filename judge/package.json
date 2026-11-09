@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "start": "node --import tsx src/main.ts",
-    "test": "node --import tsx --test \"test/**/*.test.ts\"",
+    "test": "node --import tsx --test --test-timeout=120000 \"test/**/*.test.ts\"",
     "test:live": "node --import tsx --test \"test/live/*.live.ts\"",
     "attest": "node --import tsx src/cli/attest.ts",
     "typecheck": "tsc -p tsconfig.json"
