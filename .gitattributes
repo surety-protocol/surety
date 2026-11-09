@@ -1,0 +1,5 @@
+# Same line endings on Windows, macOS and Linux (keeps patch hashes stable)
+* text=auto eol=lf
+*.wasm binary
+*.png binary
+*.gif binary

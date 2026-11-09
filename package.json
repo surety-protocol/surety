@@ -1,0 +1,26 @@
+{
+  "name": "surety",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Insurance for AI coding agents on NEAR: bonded agents, verifiable AI judges, automatic refunds.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "workspaces": [
+    "shared",
+    "judge",
+    "agents",
+    "sim",
+    "web"
+  ],
+  "scripts": {
+    "test": "npm run test --workspaces --if-present",
+    "sim": "npm run sim -w @surety/sim --if-present",
+    "judge": "npm run start -w @surety/judge --if-present",
+    "web": "npm run dev -w @surety/web --if-present",
+    "setup:testnet": "node scripts/setup-testnet.mjs",
+    "deploy": "node scripts/deploy.mjs",
+    "judge-demo": "node scripts/demo.mjs"
+  }
+}

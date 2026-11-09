@@ -1,0 +1,7 @@
+{
+  "name": "@surety/sim",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Simulation of the Surety market",
+  "license": "MIT"
+}

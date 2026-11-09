@@ -1,0 +1,7 @@
+{
+  "name": "@surety/web",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Dashboard",
+  "license": "MIT"
+}

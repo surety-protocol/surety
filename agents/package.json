@@ -1,0 +1,7 @@
+{
+  "name": "@surety/agents",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Scripted demo agents, demo job repo, job specs, patches",
+  "license": "MIT"
+}

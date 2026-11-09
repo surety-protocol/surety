@@ -1,0 +1,29 @@
+# Secrets: never commit
+.env
+.env.*
+!.env.example
+*.pem
+*-key.json
+credentials/
+.near-credentials/
+
+# Dependencies and builds
+node_modules/
+target/
+dist/
+build/
+.vite/
+*.wasm
+!token/res/*.wasm
+!contract/res/*.wasm
+
+# Tools and OS
+.vercel/
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/
+
+# Judge scratch space (patched copies of the demo repo)
+judge/tmp/
