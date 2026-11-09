@@ -1,0 +1,17 @@
+{
+  "title": "Fix the login bug",
+  "description": "Login accepts an empty password. Reject it with error code EMPTY_PASSWORD. Do not change lockout or session behaviour.",
+  "repo_path": "agents/demo-repo",
+  "test_command": "npm test --silent",
+  "allowed_paths": ["src/auth/"],
+  "checks": [
+    { "id": "t1", "type": "test", "name": "rejects empty password" },
+    { "id": "t2", "type": "test", "name": "accepts valid password" },
+    { "id": "t3", "type": "test", "name": "returns EMPTY_PASSWORD code" },
+    { "id": "t4", "type": "test", "name": "locks after 5 failed attempts" },
+    { "id": "t5", "type": "test", "name": "existing session tests still pass" },
+    { "id": "a1", "type": "ai", "question": "Did the patch change only files under src/auth/?" },
+    { "id": "a2", "type": "ai", "question": "Does the patch do what the description asks, without unrelated changes?" }
+  ],
+  "min_score_bps": 5000
+}

@@ -1,0 +1,9 @@
+diff --git a/src/auth/login.js b/src/auth/login.js
+index 7af693b..697afc9 100644
+--- a/src/auth/login.js
++++ b/src/auth/login.js
+@@ -1,3 +1,4 @@
++// Login: password checks and lockout.
+ import { createHash } from "node:crypto";
+ import { createSession } from "../session.js";
+ 

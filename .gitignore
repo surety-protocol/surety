@@ -27,3 +27,6 @@ Thumbs.db
 
 # Judge scratch space (patched copies of the demo repo)
 judge/tmp/
+
+# Judge scratch folders for receipts in progress
+receipts/*.tmp-*

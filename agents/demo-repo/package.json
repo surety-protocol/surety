@@ -1,0 +1,10 @@
+{
+  "name": "surety-demo-auth",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Tiny auth module with a real bug, used as the demo coding job. No dependencies, no network.",
+  "type": "module",
+  "scripts": {
+    "test": "node --test --test-reporter=tap \"test/*.test.js\""
+  }
+}

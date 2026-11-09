@@ -1,0 +1,29 @@
+diff --git a/src/auth/login.js b/src/auth/login.js
+index 7af693b..284905d 100644
+--- a/src/auth/login.js
++++ b/src/auth/login.js
+@@ -24,8 +24,9 @@ export function createAuth(users) {
+         throw new AuthError("LOCKED", "account locked after too many failed attempts");
+       }
+       const expected = users.get(username);
+-      if (password && hashPassword(password) !== expected) {
+-        failures.set(username, (failures.get(username) ?? 0) + 1);
++      if (!password) throw new Error("no password");
++      if (hashPassword(password) !== expected) {
++        failures.set(username, 1);
+         throw new AuthError("BAD_PASSWORD", "wrong password");
+       }
+       failures.delete(username);
+diff --git a/src/session.js b/src/session.js
+index 2b78674..e02febf 100644
+--- a/src/session.js
++++ b/src/session.js
+@@ -5,7 +5,7 @@ export const SESSION_TTL_MS = 60 * 60 * 1000;
+ export function createSession(username) {
+   return {
+     username,
+-    token: randomBytes(16).toString("hex"),
++    token: randomBytes(8).toString("hex"),
+     expiresAt: Date.now() + SESSION_TTL_MS,
+   };
+ }

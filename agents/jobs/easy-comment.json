@@ -1,0 +1,11 @@
+{
+  "title": "Add a header comment to the login module",
+  "description": "Add a one-line comment at the top of src/auth/login.js describing the module. Self-dealt job used by the cheater scenario.",
+  "repo_path": "agents/demo-repo",
+  "test_command": "npm test --silent",
+  "allowed_paths": ["src/auth/"],
+  "checks": [
+    { "id": "t2", "type": "test", "name": "accepts valid password" }
+  ],
+  "min_score_bps": 5000
+}

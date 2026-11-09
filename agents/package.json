@@ -2,6 +2,19 @@
   "name": "@surety/agents",
   "private": true,
   "version": "0.1.0",
-  "description": "Scripted demo agents, demo job repo, job specs, patches",
-  "license": "MIT"
+  "description": "Scripted demo agents, the demo job repo, job specs and patches",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/agent.ts"
+  },
+  "scripts": {
+    "run-agent": "node --import tsx src/run-agent.ts",
+    "post-job": "node --import tsx src/post-job.ts",
+    "test": "node --import tsx --test --test-timeout=120000 \"test/**/*.test.ts\"",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@surety/shared": "*"
+  }
 }
