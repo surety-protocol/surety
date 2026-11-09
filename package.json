@@ -15,6 +15,7 @@
     "web"
   ],
   "scripts": {
+    "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "sim": "npm run sim -w @surety/sim --if-present",
     "judge": "npm run start -w @surety/judge --if-present",

@@ -11,7 +11,8 @@
   "scripts": {
     "run-agent": "node --import tsx src/run-agent.ts",
     "post-job": "node --import tsx src/post-job.ts",
-    "test": "node --import tsx --test \"test/**/*.test.ts\""
+    "test": "node --import tsx --test \"test/**/*.test.ts\"",
+    "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
     "@surety/shared": "*"
