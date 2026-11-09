@@ -1,0 +1,83 @@
+{
+  "about": "Shared pricing test cases from MECHANISM.md. Expected values were worked out by hand. Dev 1's Rust tests and Dev 2's TypeScript tests must both pass every case. Amounts are token units (6 decimals) as strings.",
+  "config": {
+    "reference_value": "50000000",
+    "penalty_bps": 2000,
+    "client_share_bps": 5000,
+    "max_leverage": 8,
+    "base_fee_bps": 100,
+    "loading_milli": 1500,
+    "min_bond": "100000000"
+  },
+  "failure_rate": [
+    { "name": "new agent (prior only)", "weighted_failures": "0", "weighted_jobs": "0", "expected_bps": 2000 },
+    { "name": "10 clean jobs of 50 from 10 clients", "weighted_failures": "0", "weighted_jobs": "500000000", "expected_bps": 666 },
+    { "name": "3 fails 2 passes of 50", "weighted_failures": "150000000", "weighted_jobs": "250000000", "expected_bps": 4000 },
+    { "name": "10 fails of 50", "weighted_failures": "500000000", "weighted_jobs": "500000000", "expected_bps": 7333 },
+    { "name": "huge clean record rounds to 0", "weighted_failures": "0", "weighted_jobs": "1000000000000000", "expected_bps": 0 }
+  ],
+  "premium": [
+    { "failure_rate_bps": 2000, "expected_bps": 700 },
+    { "failure_rate_bps": 666, "expected_bps": 299 },
+    { "failure_rate_bps": 4000, "expected_bps": 1300 },
+    { "failure_rate_bps": 7333, "expected_bps": 2299 },
+    { "failure_rate_bps": 0, "expected_bps": 100 },
+    { "failure_rate_bps": 10000, "expected_bps": 3100 }
+  ],
+  "job_weight": [
+    { "value": "50000000", "k": 1, "expected": "50000000" },
+    { "value": "50000000", "k": 2, "expected": "25000000" },
+    { "value": "50000000", "k": 3, "expected": "16666666" },
+    { "value": "7", "k": 2, "expected": "3" }
+  ],
+  "record_update": [
+    { "name": "pass", "weighted_failures": "0", "weighted_jobs": "0", "weight": "50000000", "score_bps": 10000, "expected_failures": "0", "expected_jobs": "50000000" },
+    { "name": "fail", "weighted_failures": "0", "weighted_jobs": "0", "weight": "50000000", "score_bps": 0, "expected_failures": "50000000", "expected_jobs": "50000000" },
+    { "name": "partial 80%", "weighted_failures": "0", "weighted_jobs": "0", "weight": "50000000", "score_bps": 8000, "expected_failures": "10000000", "expected_jobs": "50000000" },
+    { "name": "partial 5/7 checks", "weighted_failures": "1000", "weighted_jobs": "2000", "weight": "50000000", "score_bps": 7142, "expected_failures": "14291000", "expected_jobs": "50002000" }
+  ],
+  "settle": [
+    { "name": "pass, worked example", "value": "50000000", "score_bps": 10000, "min_score_bps": 5000, "premium_bps": 700, "bond": "100000000", "pool_total": "200000000", "has_backers": true,
+      "expected": { "outcome": "Pass", "to_agent": "46500000", "to_client": "0", "to_pool": "3500000", "to_bond": "0", "from_bond": "0", "from_pool": "0" } },
+    { "name": "pass, no backers: premium to bond", "value": "50000000", "score_bps": 10000, "min_score_bps": 5000, "premium_bps": 700, "bond": "100000000", "pool_total": "0", "has_backers": false,
+      "expected": { "outcome": "Pass", "to_agent": "46500000", "to_client": "0", "to_pool": "0", "to_bond": "3500000", "from_bond": "0", "from_pool": "0" } },
+    { "name": "partial 80%, worked example", "value": "50000000", "score_bps": 8000, "min_score_bps": 5000, "premium_bps": 700, "bond": "100000000", "pool_total": "200000000", "has_backers": true,
+      "expected": { "outcome": "Partial", "to_agent": "37200000", "to_client": "10000000", "to_pool": "2800000", "to_bond": "0", "from_bond": "0", "from_pool": "0" } },
+    { "name": "fail with backers, worked example", "value": "50000000", "score_bps": 2857, "min_score_bps": 5000, "premium_bps": 700, "bond": "100000000", "pool_total": "200000000", "has_backers": true,
+      "expected": { "outcome": "Fail", "to_agent": "0", "to_client": "55000000", "to_pool": "5000000", "to_bond": "0", "from_bond": "10000000", "from_pool": "0" } },
+    { "name": "fail, no backers: client gets whole penalty", "value": "50000000", "score_bps": 2857, "min_score_bps": 5000, "premium_bps": 700, "bond": "100000000", "pool_total": "0", "has_backers": false,
+      "expected": { "outcome": "Fail", "to_agent": "0", "to_client": "60000000", "to_pool": "0", "to_bond": "0", "from_bond": "10000000", "from_pool": "0" } },
+    { "name": "fail, bond short: pool pays the rest", "value": "100000000", "score_bps": 0, "min_score_bps": 5000, "premium_bps": 700, "bond": "5000000", "pool_total": "100000000", "has_backers": true,
+      "expected": { "outcome": "Fail", "to_agent": "0", "to_client": "110000000", "to_pool": "10000000", "to_bond": "0", "from_bond": "5000000", "from_pool": "15000000" } },
+    { "name": "fail, bond and pool both short", "value": "100000000", "score_bps": 0, "min_score_bps": 5000, "premium_bps": 700, "bond": "5000000", "pool_total": "3000000", "has_backers": true,
+      "expected": { "outcome": "Fail", "to_agent": "0", "to_client": "104000000", "to_pool": "4000000", "to_bond": "0", "from_bond": "5000000", "from_pool": "3000000" } },
+    { "name": "pass, rounding", "value": "33", "score_bps": 10000, "min_score_bps": 5000, "premium_bps": 700, "bond": "100000000", "pool_total": "1", "has_backers": true,
+      "expected": { "outcome": "Pass", "to_agent": "31", "to_client": "0", "to_pool": "2", "to_bond": "0", "from_bond": "0", "from_pool": "0" } },
+    { "name": "partial, rounding", "value": "33", "score_bps": 7142, "min_score_bps": 5000, "premium_bps": 1300, "bond": "100000000", "pool_total": "1", "has_backers": true,
+      "expected": { "outcome": "Partial", "to_agent": "21", "to_client": "10", "to_pool": "2", "to_bond": "0", "from_bond": "0", "from_pool": "0" } },
+    { "name": "score exactly at minimum is partial", "value": "50000000", "score_bps": 5000, "min_score_bps": 5000, "premium_bps": 700, "bond": "100000000", "pool_total": "0", "has_backers": false,
+      "expected": { "outcome": "Partial", "to_agent": "23250000", "to_client": "25000000", "to_pool": "0", "to_bond": "1750000", "from_bond": "0", "from_pool": "0" } },
+    { "name": "one below minimum is fail", "value": "50000000", "score_bps": 4999, "min_score_bps": 5000, "premium_bps": 700, "bond": "100000000", "pool_total": "0", "has_backers": false,
+      "expected": { "outcome": "Fail", "to_agent": "0", "to_client": "60000000", "to_pool": "0", "to_bond": "0", "from_bond": "10000000", "from_pool": "0" } }
+  ],
+  "can_accept": [
+    { "name": "no bond", "bond": "0", "pool_total": "0", "open_exposure": "0", "value": "50000000", "expected": false },
+    { "name": "fits coverage", "bond": "100000000", "pool_total": "0", "open_exposure": "0", "value": "50000000", "expected": true },
+    { "name": "over coverage", "bond": "100000000", "pool_total": "0", "open_exposure": "60000000", "value": "50000000", "expected": false },
+    { "name": "exactly 8x bond", "bond": "100000000", "pool_total": "1000000000", "open_exposure": "750000000", "value": "50000000", "expected": true },
+    { "name": "over 8x bond", "bond": "100000000", "pool_total": "1000000000", "open_exposure": "750000000", "value": "51000000", "expected": false }
+  ],
+  "pool_delta": [
+    { "name": "gain pro rata", "backers": [["a", "100"], ["b", "200"]], "delta": "30", "expected": [["a", "110"], ["b", "220"]] },
+    { "name": "gain dust to largest, tie by id", "backers": [["a", "1"], ["b", "1"], ["c", "1"]], "delta": "2", "expected": [["a", "3"], ["b", "1"], ["c", "1"]] },
+    { "name": "loss pro rata", "backers": [["a", "100"], ["b", "200"]], "delta": "-30", "expected": [["a", "90"], ["b", "180"]] },
+    { "name": "loss dust from largest, spills over", "backers": [["a", "1"], ["b", "1"], ["c", "1"]], "delta": "-2", "expected": [["a", "0"], ["b", "0"], ["c", "1"]] },
+    { "name": "loss dust from largest", "backers": [["a", "50"], ["b", "25"]], "delta": "-10", "expected": [["a", "43"], ["b", "22"]] }
+  ],
+  "collusion_safe": [
+    { "max_leverage": 8, "penalty_bps": 2000, "client_share_bps": 5000, "expected": true },
+    { "max_leverage": 10, "penalty_bps": 2000, "client_share_bps": 5000, "expected": false },
+    { "max_leverage": 2, "penalty_bps": 5000, "client_share_bps": 10000, "expected": false },
+    { "max_leverage": 9, "penalty_bps": 2000, "client_share_bps": 5000, "expected": true }
+  ]
+}

@@ -2,6 +2,24 @@
   "name": "@surety/shared",
   "private": true,
   "version": "0.1.0",
-  "description": "Shared types, pricing formulas, NEAR helpers",
-  "license": "MIT"
+  "description": "Shared types, pricing formulas, hashing, NEAR helpers and an in-memory reference chain",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*.ts",
+    "./test-vectors.json": "./test-vectors.json"
+  },
+  "scripts": {
+    "test": "node --import tsx --test \"test/**/*.test.ts\"",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "near-api-js": "^7.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
 }

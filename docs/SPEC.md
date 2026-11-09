@@ -290,9 +290,19 @@ receipts/<job_id>/
 ```
 
 `score_bps = floor(checks_passed * 10000 / checks_total)`.
-An AI check passes when **at least 2 of 3** models say pass **and** their
-attestations verified. A model whose attestation fails to verify counts as a
-fail vote and is flagged in the receipt.
+An AI check passes when **at least 2 of 3** models say pass **and** both their
+attestation and their response signature verified. A vote that fails either
+check counts as a fail vote and is flagged in the receipt.
+
+`verdict.json` also carries `isolation` (`"docker"` or `"tempdir"`) and
+`problems` (list of strings, e.g. a hash mismatch). Each check carries its
+`name` (tests) or `question` (AI). Each vote carries `attestation_verified`,
+`signature_verified` and `problems`. Exact shape: `shared/src/types.ts` (`Verdict`).
+
+**Judge models** (NEAR-operated TEE models, one per lab, checked 2026-11-09):
+`deepseek-ai/DeepSeek-V4.1-Flash-1017`, `z-ai/glm-5.3-flash`, `Qwen/Qwen3.8-27B`.
+Models marked "attested 3p" or owned by outside providers (OpenAI, Anthropic,
+Google) are not NEAR TEE models and are not used as judges.
 
 ---
 
@@ -360,3 +370,4 @@ vectors together on day 1.
 5. Verify every endpoint, model id, package version and API shape in the official docs before using it. Don't guess.
 6. If something in this spec is wrong or blocks you, say so in the team chat before working around it.
 7. Feature freeze: end of Tue 11 Nov. After that, only bug fixes, tests, docs and the demo.
+8. No AI attribution in git: never add `Co-Authored-By: Claude/Codex` trailers to commits or "Generated with ..." lines to pull requests. (See `CLAUDE.md` / `AGENTS.md`.)

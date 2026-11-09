@@ -2,6 +2,21 @@
   "name": "@surety/judge",
   "private": true,
   "version": "0.1.0",
-  "description": "Judge service and demo HTTP API",
-  "license": "MIT"
+  "description": "Judge service: runs the client's tests, asks three verifiable AI judges on NEAR AI Cloud, publishes receipts and submits verdicts. Also serves the demo HTTP API.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "node --import tsx src/main.ts",
+    "test": "node --import tsx --test \"test/**/*.test.ts\"",
+    "test:live": "node --import tsx --test \"test/live/*.live.ts\"",
+    "attest": "node --import tsx src/cli/attest.ts",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@phala/dcap-qvl": "^0.7.1",
+    "@surety/shared": "*",
+    "ethers": "^6.17.0",
+    "zod": "^4.6.7",
+    "@surety/agents": "*"
+  }
 }

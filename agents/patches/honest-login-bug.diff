@@ -1,0 +1,17 @@
+diff --git a/src/auth/login.js b/src/auth/login.js
+index 7af693b..ab295f4 100644
+--- a/src/auth/login.js
++++ b/src/auth/login.js
+@@ -23,8 +23,11 @@ export function createAuth(users) {
+       if ((failures.get(username) ?? 0) >= MAX_ATTEMPTS) {
+         throw new AuthError("LOCKED", "account locked after too many failed attempts");
+       }
++      if (!password) {
++        throw new AuthError("EMPTY_PASSWORD", "password is required");
++      }
+       const expected = users.get(username);
+-      if (password && hashPassword(password) !== expected) {
++      if (hashPassword(password) !== expected) {
+         failures.set(username, (failures.get(username) ?? 0) + 1);
+         throw new AuthError("BAD_PASSWORD", "wrong password");
+       }

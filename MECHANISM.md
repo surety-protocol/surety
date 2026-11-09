@@ -126,8 +126,15 @@ to_client  = V + client_cut               // full refund from escrow + compensat
 to_pool    = penalty - client_cut         // backers' share of the penalty
 ```
 
+If the agent has **no backers**, `client_cut = penalty` (the client receives the
+whole penalty, `to_pool = 0`), because there is nobody to receive the backers'
+share. Collusion still gains nothing: the bond moves to the partner, and there is
+no pool to drain.
+
 Pool losses (`from_pool`) and pool gains (`to_pool`) are applied to each backer
-in proportion to their share of `pool_total`.
+in proportion to their share of `pool_total`. Rounding dust goes to (or comes
+from) the largest backer, ties broken by account id, so the pool total always
+changes by exactly the delta.
 
 ### 4.4 Worked example (V = 50 tUSDC, p = 700)
 
