@@ -1,0 +1,17 @@
+[package]
+name = "tusdc-token"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+near-sdk = { version = "5.30.1", features = ["legacy"] }
+near-contract-standards = "5.30.1"
+
+[dev-dependencies]
+near-sdk = { version = "5.30.1", features = ["legacy", "unit-testing"] }
+
+[features]
+default = []

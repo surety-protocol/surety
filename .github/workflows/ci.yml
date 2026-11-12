@@ -45,6 +45,18 @@ jobs:
       - name: Tests
         run: npm test
 
+  contract:
+    name: Contract tests (Rust)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - run: rustup target add wasm32-unknown-unknown
+      - name: Unit tests (contract + token, incl. shared test vectors)
+        run: cargo test --workspace
+      - name: Build wasm
+        run: cargo build --target wasm32-unknown-unknown --release -p surety-core -p tusdc-token
+
   live-attestation:
     name: Live judge attestation
     if: github.event_name == 'workflow_dispatch' && inputs.live_attestation

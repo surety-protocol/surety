@@ -1,0 +1,18 @@
+# Windows build configuration for near-sdk 5.30.x
+# aws-lc-sys requires cmake but NOT nasm when NO_ASM=1 is set.
+# cmake ships with Visual Studio Build Tools and is added to PATH below.
+
+[env]
+AWS_LC_SYS_NO_ASM = "1"
+
+[build]
+# Uncomment and adjust if cmake is not on your system PATH:
+# rustflags = []
+
+# Ensure the cmake bundled with VS Build Tools is found.
+# PowerShell one-liner to add it before cargo commands:
+#   $env:PATH = "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin;$env:PATH"
+
+# NEAR's runtime supports the baseline (MVP) wasm feature set only.
+[target.wasm32-unknown-unknown]
+rustflags = ["-C", "target-cpu=mvp"]
