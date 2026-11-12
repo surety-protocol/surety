@@ -1,0 +1,294 @@
+{
+  "generated_at": "2026-11-12T09:02:45.719Z",
+  "config": {
+    "seed": 20261114,
+    "rounds": 20,
+    "market_jobs": 500,
+    "sock_puppet_jobs": 60,
+    "collusion_jobs": 8
+  },
+  "agents": [
+    {
+      "agent_id": "honest01.sim",
+      "role": "honest",
+      "true_failure_bps": 200,
+      "failure_rate_bps": 2509,
+      "premium_bps": 852,
+      "bond": "297190000",
+      "pool_total": "0",
+      "market_jobs": 3,
+      "jobs_last_quarter": 0,
+      "can_take_jobs": true
+    },
+    {
+      "agent_id": "honest02.sim",
+      "role": "honest",
+      "true_failure_bps": 522,
+      "failure_rate_bps": 645,
+      "premium_bps": 293,
+      "bond": "268900000",
+      "pool_total": "6072775371",
+      "market_jobs": 52,
+      "jobs_last_quarter": 52,
+      "can_take_jobs": true
+    },
+    {
+      "agent_id": "honest03.sim",
+      "role": "honest",
+      "true_failure_bps": 844,
+      "failure_rate_bps": 2432,
+      "premium_bps": 829,
+      "bond": "297440000",
+      "pool_total": "0",
+      "market_jobs": 2,
+      "jobs_last_quarter": 0,
+      "can_take_jobs": true
+    },
+    {
+      "agent_id": "honest04.sim",
+      "role": "honest",
+      "true_failure_bps": 1167,
+      "failure_rate_bps": 1488,
+      "premium_bps": 546,
+      "bond": "306020000",
+      "pool_total": "0",
+      "market_jobs": 1,
+      "jobs_last_quarter": 1,
+      "can_take_jobs": true
+    },
+    {
+      "agent_id": "honest05.sim",
+      "role": "honest",
+      "true_failure_bps": 1489,
+      "failure_rate_bps": 1172,
+      "premium_bps": 451,
+      "bond": "80744000",
+      "pool_total": "0",
+      "market_jobs": 164,
+      "jobs_last_quarter": 60,
+      "can_take_jobs": false
+    },
+    {
+      "agent_id": "honest06.sim",
+      "role": "honest",
+      "true_failure_bps": 1811,
+      "failure_rate_bps": 1633,
+      "premium_bps": 589,
+      "bond": "303920000",
+      "pool_total": "0",
+      "market_jobs": 1,
+      "jobs_last_quarter": 1,
+      "can_take_jobs": true
+    },
+    {
+      "agent_id": "honest07.sim",
+      "role": "honest",
+      "true_failure_bps": 2133,
+      "failure_rate_bps": 1666,
+      "premium_bps": 599,
+      "bond": "303500000",
+      "pool_total": "0",
+      "market_jobs": 1,
+      "jobs_last_quarter": 1,
+      "can_take_jobs": true
+    },
+    {
+      "agent_id": "honest08.sim",
+      "role": "honest",
+      "true_failure_bps": 2456,
+      "failure_rate_bps": 2068,
+      "premium_bps": 720,
+      "bond": "182627100",
+      "pool_total": "0",
+      "market_jobs": 49,
+      "jobs_last_quarter": 0,
+      "can_take_jobs": true
+    },
+    {
+      "agent_id": "honest09.sim",
+      "role": "honest",
+      "true_failure_bps": 2778,
+      "failure_rate_bps": 2087,
+      "premium_bps": 726,
+      "bond": "172343200",
+      "pool_total": "0",
+      "market_jobs": 61,
+      "jobs_last_quarter": 5,
+      "can_take_jobs": true
+    },
+    {
+      "agent_id": "honest10.sim",
+      "role": "honest",
+      "true_failure_bps": 3100,
+      "failure_rate_bps": 3475,
+      "premium_bps": 1142,
+      "bond": "273726500",
+      "pool_total": "0",
+      "market_jobs": 6,
+      "jobs_last_quarter": 0,
+      "can_take_jobs": true
+    },
+    {
+      "agent_id": "honest11.sim",
+      "role": "honest",
+      "true_failure_bps": 3422,
+      "failure_rate_bps": 3280,
+      "premium_bps": 1084,
+      "bond": "287730000",
+      "pool_total": "0",
+      "market_jobs": 2,
+      "jobs_last_quarter": 0,
+      "can_take_jobs": true
+    },
+    {
+      "agent_id": "honest12.sim",
+      "role": "honest",
+      "true_failure_bps": 3744,
+      "failure_rate_bps": 1672,
+      "premium_bps": 601,
+      "bond": "303430000",
+      "pool_total": "0",
+      "market_jobs": 1,
+      "jobs_last_quarter": 1,
+      "can_take_jobs": true
+    },
+    {
+      "agent_id": "honest13.sim",
+      "role": "honest",
+      "true_failure_bps": 4067,
+      "failure_rate_bps": 3485,
+      "premium_bps": 1145,
+      "bond": "288600000",
+      "pool_total": "0",
+      "market_jobs": 1,
+      "jobs_last_quarter": 1,
+      "can_take_jobs": true
+    },
+    {
+      "agent_id": "honest14.sim",
+      "role": "honest",
+      "true_failure_bps": 4389,
+      "failure_rate_bps": 2000,
+      "premium_bps": 700,
+      "bond": "300000000",
+      "pool_total": "0",
+      "market_jobs": 0,
+      "jobs_last_quarter": 0,
+      "can_take_jobs": true
+    },
+    {
+      "agent_id": "honest15.sim",
+      "role": "honest",
+      "true_failure_bps": 4711,
+      "failure_rate_bps": 2188,
+      "premium_bps": 756,
+      "bond": "294140000",
+      "pool_total": "0",
+      "market_jobs": 2,
+      "jobs_last_quarter": 2,
+      "can_take_jobs": true
+    },
+    {
+      "agent_id": "honest16.sim",
+      "role": "honest",
+      "true_failure_bps": 5033,
+      "failure_rate_bps": 5423,
+      "premium_bps": 1726,
+      "bond": "262600000",
+      "pool_total": "0",
+      "market_jobs": 3,
+      "jobs_last_quarter": 0,
+      "can_take_jobs": true
+    },
+    {
+      "agent_id": "honest17.sim",
+      "role": "honest",
+      "true_failure_bps": 5356,
+      "failure_rate_bps": 1831,
+      "premium_bps": 649,
+      "bond": "301610000",
+      "pool_total": "0",
+      "market_jobs": 1,
+      "jobs_last_quarter": 1,
+      "can_take_jobs": true
+    },
+    {
+      "agent_id": "honest18.sim",
+      "role": "honest",
+      "true_failure_bps": 5678,
+      "failure_rate_bps": 3431,
+      "premium_bps": 1129,
+      "bond": "286760000",
+      "pool_total": "0",
+      "market_jobs": 3,
+      "jobs_last_quarter": 0,
+      "can_take_jobs": true
+    },
+    {
+      "agent_id": "honest19.sim",
+      "role": "honest",
+      "true_failure_bps": 6000,
+      "failure_rate_bps": 2000,
+      "premium_bps": 700,
+      "bond": "300000000",
+      "pool_total": "0",
+      "market_jobs": 0,
+      "jobs_last_quarter": 0,
+      "can_take_jobs": true
+    },
+    {
+      "agent_id": "cheater.sim",
+      "role": "cheater",
+      "true_failure_bps": 3000,
+      "failure_rate_bps": 1986,
+      "premium_bps": 695,
+      "bond": "304035000",
+      "pool_total": "5406843129",
+      "market_jobs": 8,
+      "jobs_last_quarter": 0,
+      "can_take_jobs": true
+    },
+    {
+      "agent_id": "colluder.sim",
+      "role": "colluder",
+      "true_failure_bps": 500,
+      "failure_rate_bps": 1062,
+      "premium_bps": 418,
+      "bond": "79968400",
+      "pool_total": "0",
+      "market_jobs": 139,
+      "jobs_last_quarter": 0,
+      "can_take_jobs": false
+    }
+  ],
+  "findings": [
+    {
+      "id": "failure_rate_converges",
+      "holds": true,
+      "headline": "Each honest agent's failure rate moves toward its true rate",
+      "explanation": "Every agent starts at the 20.0% prior. Of the 4 honest agents with 10+ jobs, 4 ended closer to their true rate than the prior.",
+      "numbers": "honest02.sim: true 5.2%, measured 6.5% (52 jobs); honest05.sim: true 14.9%, measured 11.7% (164 jobs); honest08.sim: true 24.6%, measured 20.7% (49 jobs); honest09.sim: true 27.8%, measured 20.9% (61 jobs)"
+    },
+    {
+      "id": "bad_agents_drop_out",
+      "holds": false,
+      "headline": "Agents above 40% failure lose their bond or stop winning jobs",
+      "explanation": "4 of 7 agents above 40% either fell below the minimum bond or won no jobs in rounds 16-20.",
+      "numbers": "honest13.sim (40.7%): bond 288.60 tUSDC, 1 late jobs; honest14.sim (43.9%): bond 300.00 tUSDC, 0 late jobs; honest15.sim (47.1%): bond 294.14 tUSDC, 2 late jobs; honest16.sim (50.3%): bond 262.60 tUSDC, 0 late jobs; honest17.sim (53.6%): bond 301.61 tUSDC, 1 late jobs; honest18.sim (56.8%): bond 286.76 tUSDC, 0 late jobs; honest19.sim (60.0%): bond 300.00 tUSDC, 0 late jobs"
+    },
+    {
+      "id": "cheater_stays_expensive",
+      "holds": false,
+      "headline": "The cheater's price stays above honest agents of the same skill",
+      "explanation": "Sock-puppet jobs lowered the cheater's price below its honest peers. Known weakness: value/k weighting limits but does not remove self-dealing.",
+      "numbers": "cheater premium 7.0% (measured failure 19.9%); honest peers 25-35% average 9.8% (honest09.sim, honest10.sim, honest11.sim)"
+    },
+    {
+      "id": "collusion_loses_money",
+      "holds": true,
+      "headline": "The colluding pair ends with less money than it started with",
+      "explanation": "The partner's refunds come out of the colluder's own bond, and with backers present half of each penalty goes to the pool. Pool money drained by collusion: 0.00 tUSDC.",
+      "numbers": "collusion profit -80.00 tUSDC over 8 colluding jobs; pair money incl. honest work: start 2300.00 tUSDC, end 9619.10 tUSDC"
+    }
+  ]
+}

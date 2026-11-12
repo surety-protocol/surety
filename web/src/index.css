@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+/* ── Design tokens ─────────────────────────────────────────────────────────── */
+@theme {
+  /* Brand blue */
+  --color-brand-50:  #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-200: #bfdbfe;
+  --color-brand-400: #60a5fa;
+  --color-brand-500: #3b82f6;
+  --color-brand-600: #2563eb;
+  --color-brand-700: #1d4ed8;
+  --color-brand-800: #1e40af;
+  --color-brand-900: #1e3a8a;
+
+  /* Sidebar / dark surface */
+  --color-sidebar:      #0f1117;
+  --color-sidebar-hover: #1a1d27;
+  --color-sidebar-active: #1e2333;
+  --color-sidebar-border: #1e2333;
+
+  /* Page background */
+  --color-surface: #f8fafc;
+  --color-surface-raised: #ffffff;
+
+  /* Status */
+  --color-pass:    #16a34a;
+  --color-fail:    #dc2626;
+  --color-warn:    #d97706;
+  --color-partial: #7c3aed;
+
+  /* Typography */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* ── Base ──────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { height: 100%; }
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-surface);
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+  margin: 0;
+}
+
+#root { height: 100%; }
+
+/* ── Scrollbar ─────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
+
+/* ── Monospace ─────────────────────────────────────────────────────────────── */
+code, pre, .font-mono { font-family: var(--font-mono); }
+
+/* ── Selection ─────────────────────────────────────────────────────────────── */
+::selection { background: #bfdbfe; color: #1e3a8a; }
+
+/* ── Animated gradient background for hero ─────────────────────────────────── */
+.hero-gradient {
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 40%, #0f172a 100%);
+}
+
+/* ── Card hover lift ───────────────────────────────────────────────────────── */
+.card-hover {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px -8px rgba(0,0,0,0.12);
+}
+
+/* ── Stat counter animation ────────────────────────────────────────────────── */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-count { animation: countUp 0.4s ease forwards; }
+
+/* ── Pulse dot ─────────────────────────────────────────────────────────────── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+.pulse-dot { animation: pulse-dot 1.4s ease-in-out infinite; }
+
+/* ── Step connector line ───────────────────────────────────────────────────── */
+.step-connector::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, #e2e8f0, transparent);
+  transform: translateY(-50%);
+}
+
+/* ── Glow effects ──────────────────────────────────────────────────────────── */
+.glow-blue {
+  box-shadow: 0 0 0 1px #2563eb, 0 4px 24px -4px rgba(37,99,235,0.3);
+}
+
+/* ── Table row hover ───────────────────────────────────────────────────────── */
+.table-row-hover:hover td { background: #f8fafc; }

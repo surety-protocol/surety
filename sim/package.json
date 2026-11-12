@@ -2,6 +2,15 @@
   "name": "@surety/sim",
   "private": true,
   "version": "0.1.0",
-  "description": "Simulation of the Surety market",
-  "license": "MIT"
+  "description": "Simulation of the Surety market (MECHANISM.md section 7), run on the shared MockChain",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "sim": "node --import tsx src/run.ts",
+    "test": "node --import tsx --test --test-timeout=120000 \"test/**/*.test.ts\"",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@surety/shared": "*"
+  }
 }
