@@ -1,7 +1,9 @@
 {
-  "generated_at": "2026-11-12T09:02:45.719Z",
+  "generated_at": "2026-11-12T10:00:34.292Z",
   "config": {
     "seed": 20261114,
+    "premium_without_backers": "bond",
+    "repeat_client_weight": "value/k",
     "rounds": 20,
     "market_jobs": 500,
     "sock_puppet_jobs": 60,

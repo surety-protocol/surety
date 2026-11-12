@@ -17,6 +17,12 @@ export interface SimOptions {
   seed?: number;
   rounds?: number;
   jobsPerRound?: number;
+  /** Experiment: where the premium goes when an agent has no backers (default "bond", MECHANISM 4.1). */
+  premiumWithoutBackers?: "bond" | "reserve";
+  /** Experiment: repeat-client weighting (default "value/k", MECHANISM 3.1). */
+  repeatClientWeight?: "value/k" | "value/k2";
+  /** Number of sock-puppet clients the cheater uses (default 3, MECHANISM 7). */
+  sockPuppets?: number;
 }
 
 export type Role = "honest" | "cheater" | "colluder";
@@ -79,7 +85,7 @@ export interface Finding {
 }
 
 export interface SimResult {
-  config: { seed: number; rounds: number; market_jobs: number; sock_puppet_jobs: number; collusion_jobs: number };
+  config: { seed: number; rounds: number; premium_without_backers: "bond" | "reserve"; repeat_client_weight: "value/k" | "value/k2"; market_jobs: number; sock_puppet_jobs: number; collusion_jobs: number };
   agents: AgentResult[];
   rounds: RoundSnapshot[];
   jobs: JobRow[];
@@ -106,7 +112,9 @@ export async function runSimulation(opts: SimOptions = {}): Promise<SimResult> {
   const jobsPerRound = opts.jobsPerRound ?? 25;
   const rand = rng(seed);
 
-  const chain = new MockChain({ judgeId: "judge.sim", panelId: "panel.sim" });
+  const premiumWithoutBackers = opts.premiumWithoutBackers ?? "bond";
+  const repeatClientWeight = opts.repeatClientWeight ?? "value/k";
+  const chain = new MockChain({ judgeId: "judge.sim", panelId: "panel.sim", premiumWithoutBackers, repeatClientWeight });
   const cfg = chain.config;
   const judge = chain.as(chain.judgeId);
 
@@ -123,7 +131,7 @@ export async function runSimulation(opts: SimOptions = {}): Promise<SimResult> {
   const cheater = "cheater.sim";
   trueRate.set(cheater, 0.3);
   role.set(cheater, "cheater");
-  const socks = ["sock1.sim", "sock2.sim", "sock3.sim"];
+  const socks = Array.from({ length: opts.sockPuppets ?? 3 }, (_, i) => `sock${i + 1}.sim`);
   const colluder = "colluder.sim";
   trueRate.set(colluder, 0.05); // honest-looking on market jobs, fails on purpose for its partner
   role.set(colluder, "colluder");
@@ -356,6 +364,8 @@ export async function runSimulation(opts: SimOptions = {}): Promise<SimResult> {
   return {
     config: {
       seed,
+      premium_without_backers: premiumWithoutBackers,
+      repeat_client_weight: repeatClientWeight,
       rounds,
       market_jobs: marketJobs,
       sock_puppet_jobs: jobs.filter((j) => j.kind === "sock_puppet").length,
