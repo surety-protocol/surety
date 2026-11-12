@@ -1,0 +1,1703 @@
+{
+  "generated_by": "web/scripts/make-mock.ts (MockChain)",
+  "now_ms": 1794416160010,
+  "agents": [
+    {
+      "agent_id": "atlas.testnet",
+      "bond": "500000000",
+      "pool_total": "919606000",
+      "backers": [
+        {
+          "backer_id": "backer1.testnet",
+          "amount": "613070669"
+        },
+        {
+          "backer_id": "backer2.testnet",
+          "amount": "306535331"
+        }
+      ],
+      "open_exposure": "75000000",
+      "weighted_jobs": "370000000",
+      "weighted_failures": "0",
+      "failure_rate_bps": 806,
+      "premium_bps": 341,
+      "jobs_passed": 3,
+      "jobs_partial": 0,
+      "jobs_failed": 0,
+      "registered_ms": 1794312000000
+    },
+    {
+      "agent_id": "forge.testnet",
+      "bond": "268902503",
+      "pool_total": "0",
+      "backers": [],
+      "open_exposure": "0",
+      "weighted_jobs": "290000000",
+      "weighted_failures": "168582000",
+      "failure_rate_bps": 4047,
+      "premium_bps": 1314,
+      "jobs_passed": 0,
+      "jobs_partial": 1,
+      "jobs_failed": 1,
+      "registered_ms": 1794312420000
+    },
+    {
+      "agent_id": "nova.testnet",
+      "bond": "400000000",
+      "pool_total": "509478000",
+      "backers": [
+        {
+          "backer_id": "backer3.testnet",
+          "amount": "509478000"
+        }
+      ],
+      "open_exposure": "60000000",
+      "weighted_jobs": "150000000",
+      "weighted_failures": "0",
+      "failure_rate_bps": 1250,
+      "premium_bps": 475,
+      "jobs_passed": 2,
+      "jobs_partial": 0,
+      "jobs_failed": 0,
+      "registered_ms": 1794312840000
+    },
+    {
+      "agent_id": "drift.testnet",
+      "bond": "152499700",
+      "pool_total": "0",
+      "backers": [],
+      "open_exposure": "50000000",
+      "weighted_jobs": "50000000",
+      "weighted_failures": "14290000",
+      "failure_rate_bps": 2143,
+      "premium_bps": 742,
+      "jobs_passed": 0,
+      "jobs_partial": 1,
+      "jobs_failed": 0,
+      "registered_ms": 1794313260000
+    },
+    {
+      "agent_id": "vex.testnet",
+      "bond": "100000000",
+      "pool_total": "0",
+      "backers": [],
+      "open_exposure": "0",
+      "weighted_jobs": "100000000",
+      "weighted_failures": "71430000",
+      "failure_rate_bps": 3469,
+      "premium_bps": 1140,
+      "jobs_passed": 0,
+      "jobs_partial": 0,
+      "jobs_failed": 2,
+      "registered_ms": 1794313680000
+    }
+  ],
+  "jobs": [
+    {
+      "job_id": 14,
+      "client_id": "carol.testnet",
+      "value": "30000000",
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "spec_url": "https://github.com/surety-protocol/surety/blob/main/agents/jobs/login-bug.json",
+      "min_score_bps": 5000,
+      "deadline_ms": 1794412440010,
+      "posted_ms": 1794326040010,
+      "status": "Cancelled",
+      "agent_id": null,
+      "premium_bps": null,
+      "patch_url": null,
+      "patch_hash": null,
+      "verdict": null,
+      "appeal": null,
+      "settlement": null
+    },
+    {
+      "job_id": 13,
+      "client_id": "bob.testnet",
+      "value": "45000000",
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "spec_url": "https://github.com/surety-protocol/surety/blob/main/agents/jobs/login-bug.json",
+      "min_score_bps": 5000,
+      "deadline_ms": 1794412320010,
+      "posted_ms": 1794325920010,
+      "status": "Open",
+      "agent_id": null,
+      "premium_bps": null,
+      "patch_url": null,
+      "patch_hash": null,
+      "verdict": null,
+      "appeal": null,
+      "settlement": null
+    },
+    {
+      "job_id": 12,
+      "client_id": "alice.testnet",
+      "value": "75000000",
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "spec_url": "https://github.com/surety-protocol/surety/blob/main/agents/jobs/login-bug.json",
+      "min_score_bps": 5000,
+      "deadline_ms": 1794412020010,
+      "posted_ms": 1794325620010,
+      "status": "Accepted",
+      "agent_id": "atlas.testnet",
+      "premium_bps": 341,
+      "patch_url": null,
+      "patch_hash": null,
+      "verdict": null,
+      "appeal": null,
+      "settlement": null
+    },
+    {
+      "job_id": 11,
+      "client_id": "frank.testnet",
+      "value": "60000000",
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "spec_url": "https://github.com/surety-protocol/surety/blob/main/agents/jobs/login-bug.json",
+      "min_score_bps": 5000,
+      "deadline_ms": 1794411660010,
+      "posted_ms": 1794325260010,
+      "status": "Delivered",
+      "agent_id": "nova.testnet",
+      "premium_bps": 475,
+      "patch_url": "https://github.com/surety-protocol/surety/tree/main/agents/patches#job-11",
+      "patch_hash": "d9efaf77bc560f53fb0c53ea35f8c21d122be406ca97c174bcdb5fafef0478fc",
+      "verdict": null,
+      "appeal": null,
+      "settlement": null
+    },
+    {
+      "job_id": 10,
+      "client_id": "erin.testnet",
+      "value": "50000000",
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "spec_url": "https://github.com/surety-protocol/surety/blob/main/agents/jobs/login-bug.json",
+      "min_score_bps": 5000,
+      "deadline_ms": 1794411300010,
+      "posted_ms": 1794324900010,
+      "status": "Judged",
+      "agent_id": "drift.testnet",
+      "premium_bps": 742,
+      "patch_url": "https://github.com/surety-protocol/surety/tree/main/agents/patches#job-10",
+      "patch_hash": "2495d65063c0a74aaf66f86fc4e072e88cdd09424be554e15581debd5fef1f7d",
+      "verdict": {
+        "score_bps": 10000,
+        "checks_passed": 7,
+        "checks_total": 7,
+        "receipts_hash": "2d0adb15af595dea2b3091c1d1971ed8d6eeb12e119b076814d9de1147c4df32",
+        "judged_ms": 1794325260010,
+        "appeal_deadline_ms": 1794325380010
+      },
+      "appeal": null,
+      "settlement": null
+    },
+    {
+      "job_id": 9,
+      "client_id": "dave.testnet",
+      "value": "40000000",
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "spec_url": "https://github.com/surety-protocol/surety/blob/main/agents/jobs/login-bug.json",
+      "min_score_bps": 5000,
+      "deadline_ms": 1794410220009,
+      "posted_ms": 1794323820009,
+      "status": "Settled",
+      "agent_id": "vex.testnet",
+      "premium_bps": 998,
+      "patch_url": "https://github.com/surety-protocol/surety/tree/main/agents/patches#job-9",
+      "patch_hash": "4137bd1d7c7d315b3b596a7f984e72e7ed73cbf17e6e8fd5ea3c5cf2ae6511cc",
+      "verdict": {
+        "score_bps": 2857,
+        "checks_passed": 2,
+        "checks_total": 7,
+        "receipts_hash": "2ae52d860963637da053586bd30424a2fb45e2e178905998e24124045cf18457",
+        "judged_ms": 1794324180009,
+        "appeal_deadline_ms": 1794324300009
+      },
+      "appeal": null,
+      "settlement": {
+        "outcome": "Fail",
+        "to_agent": "0",
+        "to_client": "48000000",
+        "to_pool": "0",
+        "from_bond": "8000000",
+        "from_pool": "0",
+        "settled_ms": 1794324300010
+      }
+    },
+    {
+      "job_id": 8,
+      "client_id": "carol.testnet",
+      "value": "150000000",
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "spec_url": "https://github.com/surety-protocol/surety/blob/main/agents/jobs/login-bug.json",
+      "min_score_bps": 5000,
+      "deadline_ms": 1794409140008,
+      "posted_ms": 1794322740008,
+      "status": "Settled",
+      "agent_id": "atlas.testnet",
+      "premium_bps": 418,
+      "patch_url": "https://github.com/surety-protocol/surety/tree/main/agents/patches#job-8",
+      "patch_hash": "2ffe902a6c5f20ebae7bae44f2eab2d0dad902b9fd2b38316d19fc6c92af807e",
+      "verdict": {
+        "score_bps": 10000,
+        "checks_passed": 7,
+        "checks_total": 7,
+        "receipts_hash": "e85475f0b4f86099c6c1d2feb1823cbda0dfa15d82f246e9360cbaad214b7e1a",
+        "judged_ms": 1794323100008,
+        "appeal_deadline_ms": 1794323220008
+      },
+      "appeal": null,
+      "settlement": {
+        "outcome": "Pass",
+        "to_agent": "143730000",
+        "to_client": "0",
+        "to_pool": "6270000",
+        "from_bond": "0",
+        "from_pool": "0",
+        "settled_ms": 1794323220009
+      }
+    },
+    {
+      "job_id": 7,
+      "client_id": "bob.testnet",
+      "value": "70000000",
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "spec_url": "https://github.com/surety-protocol/surety/blob/main/agents/jobs/login-bug.json",
+      "min_score_bps": 5000,
+      "deadline_ms": 1794408060007,
+      "posted_ms": 1794321660007,
+      "status": "Settled",
+      "agent_id": "nova.testnet",
+      "premium_bps": 554,
+      "patch_url": "https://github.com/surety-protocol/surety/tree/main/agents/patches#job-7",
+      "patch_hash": "134199c8cb34dcd8aaa7b2c747b82ed6d1cf426171dc7c0ed1b86e337389b2bd",
+      "verdict": {
+        "score_bps": 10000,
+        "checks_passed": 7,
+        "checks_total": 7,
+        "receipts_hash": "1e3fb3fe8436150840d45f4a3ef84ef0545a7263453cccf53074886b525160b2",
+        "judged_ms": 1794322020007,
+        "appeal_deadline_ms": 1794322140007
+      },
+      "appeal": null,
+      "settlement": {
+        "outcome": "Pass",
+        "to_agent": "66122000",
+        "to_client": "0",
+        "to_pool": "3878000",
+        "from_bond": "0",
+        "from_pool": "0",
+        "settled_ms": 1794322140008
+      }
+    },
+    {
+      "job_id": 6,
+      "client_id": "alice.testnet",
+      "value": "90000000",
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "spec_url": "https://github.com/surety-protocol/surety/blob/main/agents/jobs/login-bug.json",
+      "min_score_bps": 5000,
+      "deadline_ms": 1794406980006,
+      "posted_ms": 1794320580006,
+      "status": "Settled",
+      "agent_id": "forge.testnet",
+      "premium_bps": 1385,
+      "patch_url": "https://github.com/surety-protocol/surety/tree/main/agents/patches#job-6",
+      "patch_hash": "f8b0d8dae97ad38ca3fd87dd46ec06d0cbe769c98396702bad5a5d881c96ecf9",
+      "verdict": {
+        "score_bps": 7142,
+        "checks_passed": 5,
+        "checks_total": 7,
+        "receipts_hash": "ab850032f1c977a07bc209ec1f45e07494c7f6694e3dd0c42dd7f3ccae152e8c",
+        "judged_ms": 1794320940006,
+        "appeal_deadline_ms": 1794321060006
+      },
+      "appeal": null,
+      "settlement": {
+        "outcome": "Partial",
+        "to_agent": "55375497",
+        "to_client": "25722000",
+        "to_pool": "8902503",
+        "from_bond": "0",
+        "from_pool": "0",
+        "settled_ms": 1794321060007
+      }
+    },
+    {
+      "job_id": 5,
+      "client_id": "frank.testnet",
+      "value": "120000000",
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "spec_url": "https://github.com/surety-protocol/surety/blob/main/agents/jobs/login-bug.json",
+      "min_score_bps": 5000,
+      "deadline_ms": 1794405900005,
+      "posted_ms": 1794319500005,
+      "status": "Settled",
+      "agent_id": "atlas.testnet",
+      "premium_bps": 528,
+      "patch_url": "https://github.com/surety-protocol/surety/tree/main/agents/patches#job-5",
+      "patch_hash": "059f07d4eb88a5900eb96ac0c59b9970caa8831eb85de8f2619cf2697c18723a",
+      "verdict": {
+        "score_bps": 10000,
+        "checks_passed": 7,
+        "checks_total": 7,
+        "receipts_hash": "df949badf7e72fd98ca9a0277ecf11319b8893e6153e2ab6b46e71ae90ffa377",
+        "judged_ms": 1794319860005,
+        "appeal_deadline_ms": 1794319980005
+      },
+      "appeal": null,
+      "settlement": {
+        "outcome": "Pass",
+        "to_agent": "113664000",
+        "to_client": "0",
+        "to_pool": "6336000",
+        "from_bond": "0",
+        "from_pool": "0",
+        "settled_ms": 1794319980006
+      }
+    },
+    {
+      "job_id": 4,
+      "client_id": "erin.testnet",
+      "value": "60000000",
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "spec_url": "https://github.com/surety-protocol/surety/blob/main/agents/jobs/login-bug.json",
+      "min_score_bps": 5000,
+      "deadline_ms": 1794404820004,
+      "posted_ms": 1794318420004,
+      "status": "Settled",
+      "agent_id": "vex.testnet",
+      "premium_bps": 700,
+      "patch_url": "https://github.com/surety-protocol/surety/tree/main/agents/patches#job-4",
+      "patch_hash": "df1d8efadf2aafe9263a16dfb06578bdf475062c3d928206f534e9f294b9e870",
+      "verdict": {
+        "score_bps": 2857,
+        "checks_passed": 2,
+        "checks_total": 7,
+        "receipts_hash": "949bf97154b04d0490870032e679e951f2f6520a197e4e0311b3c8714e35f1f2",
+        "judged_ms": 1794318780004,
+        "appeal_deadline_ms": 1794318900004
+      },
+      "appeal": null,
+      "settlement": {
+        "outcome": "Fail",
+        "to_agent": "0",
+        "to_client": "72000000",
+        "to_pool": "0",
+        "from_bond": "12000000",
+        "from_pool": "0",
+        "settled_ms": 1794318900005
+      }
+    },
+    {
+      "job_id": 3,
+      "client_id": "dave.testnet",
+      "value": "50000000",
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "spec_url": "https://github.com/surety-protocol/surety/blob/main/agents/jobs/login-bug.json",
+      "min_score_bps": 5000,
+      "deadline_ms": 1794403740003,
+      "posted_ms": 1794317340003,
+      "status": "Settled",
+      "agent_id": "drift.testnet",
+      "premium_bps": 700,
+      "patch_url": "https://github.com/surety-protocol/surety/tree/main/agents/patches#job-3",
+      "patch_hash": "d566d203115e9c5f0e2476628b09e7f00020812f05103a8a72eb7cb169de96ef",
+      "verdict": {
+        "score_bps": 7142,
+        "checks_passed": 5,
+        "checks_total": 7,
+        "receipts_hash": "dc881bd7478e5ddd35e731f2ef8c99bc0bc9a0d0ec4b48809acfef1c72c3fdbe",
+        "judged_ms": 1794317700003,
+        "appeal_deadline_ms": 1794317820003
+      },
+      "appeal": null,
+      "settlement": {
+        "outcome": "Partial",
+        "to_agent": "33210300",
+        "to_client": "14290000",
+        "to_pool": "2499700",
+        "from_bond": "0",
+        "from_pool": "0",
+        "settled_ms": 1794317820004
+      }
+    },
+    {
+      "job_id": 2,
+      "client_id": "carol.testnet",
+      "value": "80000000",
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "spec_url": "https://github.com/surety-protocol/surety/blob/main/agents/jobs/login-bug.json",
+      "min_score_bps": 5000,
+      "deadline_ms": 1794402660002,
+      "posted_ms": 1794316260002,
+      "status": "Settled",
+      "agent_id": "nova.testnet",
+      "premium_bps": 700,
+      "patch_url": "https://github.com/surety-protocol/surety/tree/main/agents/patches#job-2",
+      "patch_hash": "93c33a9da9fccc2c350b8f171338c789e2704e7fb0ad2b4247c5d43535561e90",
+      "verdict": {
+        "score_bps": 10000,
+        "checks_passed": 7,
+        "checks_total": 7,
+        "receipts_hash": "69868fd4ed903dc3d446d996a58306df44578250d89d54dc0e1744f9b82147c8",
+        "judged_ms": 1794316620002,
+        "appeal_deadline_ms": 1794316740002
+      },
+      "appeal": null,
+      "settlement": {
+        "outcome": "Pass",
+        "to_agent": "74400000",
+        "to_client": "0",
+        "to_pool": "5600000",
+        "from_bond": "0",
+        "from_pool": "0",
+        "settled_ms": 1794316740003
+      }
+    },
+    {
+      "job_id": 1,
+      "client_id": "bob.testnet",
+      "value": "200000000",
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "spec_url": "https://github.com/surety-protocol/surety/blob/main/agents/jobs/login-bug.json",
+      "min_score_bps": 5000,
+      "deadline_ms": 1794401580001,
+      "posted_ms": 1794315180001,
+      "status": "Settled",
+      "agent_id": "forge.testnet",
+      "premium_bps": 700,
+      "patch_url": "https://github.com/surety-protocol/surety/tree/main/agents/patches#job-1",
+      "patch_hash": "33df0cf768d9f425aecca844921d344a6919929ed0563f4c83bcf0ae8118839d",
+      "verdict": {
+        "score_bps": 2857,
+        "checks_passed": 2,
+        "checks_total": 7,
+        "receipts_hash": "dd07ca4dc9fc89df031f9b5a26d5179a43e0a827b9ce5b889d8e5c1ca9e537f2",
+        "judged_ms": 1794315540001,
+        "appeal_deadline_ms": 1794315660001
+      },
+      "appeal": null,
+      "settlement": {
+        "outcome": "Fail",
+        "to_agent": "0",
+        "to_client": "240000000",
+        "to_pool": "0",
+        "from_bond": "40000000",
+        "from_pool": "0",
+        "settled_ms": 1794315660002
+      }
+    },
+    {
+      "job_id": 0,
+      "client_id": "alice.testnet",
+      "value": "100000000",
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "spec_url": "https://github.com/surety-protocol/surety/blob/main/agents/jobs/login-bug.json",
+      "min_score_bps": 5000,
+      "deadline_ms": 1794400500000,
+      "posted_ms": 1794314100000,
+      "status": "Settled",
+      "agent_id": "atlas.testnet",
+      "premium_bps": 700,
+      "patch_url": "https://github.com/surety-protocol/surety/tree/main/agents/patches#job-0",
+      "patch_hash": "8d1c3243a35e2d54669fcc40dbb22ee8a6b9a4a9a35410cc816cf9175cd79c89",
+      "verdict": {
+        "score_bps": 10000,
+        "checks_passed": 7,
+        "checks_total": 7,
+        "receipts_hash": "ae9efbbfcc82a45e58b0e52f3e2a2787caf8edfdcb1aede4c165fff5c19d6730",
+        "judged_ms": 1794314460000,
+        "appeal_deadline_ms": 1794314580000
+      },
+      "appeal": null,
+      "settlement": {
+        "outcome": "Pass",
+        "to_agent": "93000000",
+        "to_client": "0",
+        "to_pool": "7000000",
+        "from_bond": "0",
+        "from_pool": "0",
+        "settled_ms": 1794314580001
+      }
+    }
+  ],
+  "verdicts": {
+    "0": {
+      "job_id": 0,
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "patch_hash": "8d1c3243a35e2d54669fcc40dbb22ee8a6b9a4a9a35410cc816cf9175cd79c89",
+      "checks": [
+        {
+          "id": "t1",
+          "type": "test",
+          "name": "rejects empty password",
+          "pass": true
+        },
+        {
+          "id": "t2",
+          "type": "test",
+          "name": "accepts valid password",
+          "pass": true
+        },
+        {
+          "id": "t3",
+          "type": "test",
+          "name": "returns EMPTY_PASSWORD code",
+          "pass": true
+        },
+        {
+          "id": "t4",
+          "type": "test",
+          "name": "locks after 5 failed attempts",
+          "pass": true
+        },
+        {
+          "id": "t5",
+          "type": "test",
+          "name": "existing session tests still pass",
+          "pass": true
+        },
+        {
+          "id": "a1",
+          "type": "ai",
+          "question": "Did the patch change only files under src/auth/?",
+          "pass": true,
+          "votes": [
+            {
+              "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "z-ai/glm-5.3-flash",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "Qwen/Qwen3.8-27B",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            }
+          ]
+        },
+        {
+          "id": "a2",
+          "type": "ai",
+          "question": "Does the patch do what the description asks, without unrelated changes?",
+          "pass": true,
+          "votes": [
+            {
+              "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "z-ai/glm-5.3-flash",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "Qwen/Qwen3.8-27B",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            }
+          ]
+        }
+      ],
+      "checks_passed": 7,
+      "checks_total": 7,
+      "score_bps": 10000,
+      "isolation": "docker",
+      "problems": [],
+      "judged_at_ms": 1794314460000
+    },
+    "1": {
+      "job_id": 1,
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "patch_hash": "33df0cf768d9f425aecca844921d344a6919929ed0563f4c83bcf0ae8118839d",
+      "checks": [
+        {
+          "id": "t1",
+          "type": "test",
+          "name": "rejects empty password",
+          "pass": false
+        },
+        {
+          "id": "t2",
+          "type": "test",
+          "name": "accepts valid password",
+          "pass": true
+        },
+        {
+          "id": "t3",
+          "type": "test",
+          "name": "returns EMPTY_PASSWORD code",
+          "pass": false
+        },
+        {
+          "id": "t4",
+          "type": "test",
+          "name": "locks after 5 failed attempts",
+          "pass": false
+        },
+        {
+          "id": "t5",
+          "type": "test",
+          "name": "existing session tests still pass",
+          "pass": false
+        },
+        {
+          "id": "a1",
+          "type": "ai",
+          "question": "Did the patch change only files under src/auth/?",
+          "pass": true,
+          "votes": [
+            {
+              "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "z-ai/glm-5.3-flash",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "Qwen/Qwen3.8-27B",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            }
+          ]
+        },
+        {
+          "id": "a2",
+          "type": "ai",
+          "question": "Does the patch do what the description asks, without unrelated changes?",
+          "pass": false,
+          "votes": [
+            {
+              "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+              "pass": false,
+              "reason": "The patch also changes session token length and the lockout counter, which the spec did not ask for.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "z-ai/glm-5.3-flash",
+              "pass": false,
+              "reason": "The patch also changes session token length and the lockout counter, which the spec did not ask for.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "Qwen/Qwen3.8-27B",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            }
+          ]
+        }
+      ],
+      "checks_passed": 2,
+      "checks_total": 7,
+      "score_bps": 2857,
+      "isolation": "docker",
+      "problems": [],
+      "judged_at_ms": 1794315540001
+    },
+    "2": {
+      "job_id": 2,
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "patch_hash": "93c33a9da9fccc2c350b8f171338c789e2704e7fb0ad2b4247c5d43535561e90",
+      "checks": [
+        {
+          "id": "t1",
+          "type": "test",
+          "name": "rejects empty password",
+          "pass": true
+        },
+        {
+          "id": "t2",
+          "type": "test",
+          "name": "accepts valid password",
+          "pass": true
+        },
+        {
+          "id": "t3",
+          "type": "test",
+          "name": "returns EMPTY_PASSWORD code",
+          "pass": true
+        },
+        {
+          "id": "t4",
+          "type": "test",
+          "name": "locks after 5 failed attempts",
+          "pass": true
+        },
+        {
+          "id": "t5",
+          "type": "test",
+          "name": "existing session tests still pass",
+          "pass": true
+        },
+        {
+          "id": "a1",
+          "type": "ai",
+          "question": "Did the patch change only files under src/auth/?",
+          "pass": true,
+          "votes": [
+            {
+              "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "z-ai/glm-5.3-flash",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "Qwen/Qwen3.8-27B",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            }
+          ]
+        },
+        {
+          "id": "a2",
+          "type": "ai",
+          "question": "Does the patch do what the description asks, without unrelated changes?",
+          "pass": true,
+          "votes": [
+            {
+              "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "z-ai/glm-5.3-flash",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "Qwen/Qwen3.8-27B",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            }
+          ]
+        }
+      ],
+      "checks_passed": 7,
+      "checks_total": 7,
+      "score_bps": 10000,
+      "isolation": "docker",
+      "problems": [],
+      "judged_at_ms": 1794316620002
+    },
+    "3": {
+      "job_id": 3,
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "patch_hash": "d566d203115e9c5f0e2476628b09e7f00020812f05103a8a72eb7cb169de96ef",
+      "checks": [
+        {
+          "id": "t1",
+          "type": "test",
+          "name": "rejects empty password",
+          "pass": true
+        },
+        {
+          "id": "t2",
+          "type": "test",
+          "name": "accepts valid password",
+          "pass": true
+        },
+        {
+          "id": "t3",
+          "type": "test",
+          "name": "returns EMPTY_PASSWORD code",
+          "pass": false
+        },
+        {
+          "id": "t4",
+          "type": "test",
+          "name": "locks after 5 failed attempts",
+          "pass": true
+        },
+        {
+          "id": "t5",
+          "type": "test",
+          "name": "existing session tests still pass",
+          "pass": true
+        },
+        {
+          "id": "a1",
+          "type": "ai",
+          "question": "Did the patch change only files under src/auth/?",
+          "pass": true,
+          "votes": [
+            {
+              "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "z-ai/glm-5.3-flash",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "Qwen/Qwen3.8-27B",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            }
+          ]
+        },
+        {
+          "id": "a2",
+          "type": "ai",
+          "question": "Does the patch do what the description asks, without unrelated changes?",
+          "pass": false,
+          "votes": [
+            {
+              "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+              "pass": false,
+              "reason": "The patch also changes session token length and the lockout counter, which the spec did not ask for.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "z-ai/glm-5.3-flash",
+              "pass": false,
+              "reason": "The patch also changes session token length and the lockout counter, which the spec did not ask for.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "Qwen/Qwen3.8-27B",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            }
+          ]
+        }
+      ],
+      "checks_passed": 5,
+      "checks_total": 7,
+      "score_bps": 7142,
+      "isolation": "docker",
+      "problems": [],
+      "judged_at_ms": 1794317700003
+    },
+    "4": {
+      "job_id": 4,
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "patch_hash": "df1d8efadf2aafe9263a16dfb06578bdf475062c3d928206f534e9f294b9e870",
+      "checks": [
+        {
+          "id": "t1",
+          "type": "test",
+          "name": "rejects empty password",
+          "pass": false
+        },
+        {
+          "id": "t2",
+          "type": "test",
+          "name": "accepts valid password",
+          "pass": true
+        },
+        {
+          "id": "t3",
+          "type": "test",
+          "name": "returns EMPTY_PASSWORD code",
+          "pass": false
+        },
+        {
+          "id": "t4",
+          "type": "test",
+          "name": "locks after 5 failed attempts",
+          "pass": false
+        },
+        {
+          "id": "t5",
+          "type": "test",
+          "name": "existing session tests still pass",
+          "pass": false
+        },
+        {
+          "id": "a1",
+          "type": "ai",
+          "question": "Did the patch change only files under src/auth/?",
+          "pass": true,
+          "votes": [
+            {
+              "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "z-ai/glm-5.3-flash",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "Qwen/Qwen3.8-27B",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            }
+          ]
+        },
+        {
+          "id": "a2",
+          "type": "ai",
+          "question": "Does the patch do what the description asks, without unrelated changes?",
+          "pass": false,
+          "votes": [
+            {
+              "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+              "pass": false,
+              "reason": "The patch also changes session token length and the lockout counter, which the spec did not ask for.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "z-ai/glm-5.3-flash",
+              "pass": false,
+              "reason": "The patch also changes session token length and the lockout counter, which the spec did not ask for.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "Qwen/Qwen3.8-27B",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            }
+          ]
+        }
+      ],
+      "checks_passed": 2,
+      "checks_total": 7,
+      "score_bps": 2857,
+      "isolation": "docker",
+      "problems": [],
+      "judged_at_ms": 1794318780004
+    },
+    "5": {
+      "job_id": 5,
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "patch_hash": "059f07d4eb88a5900eb96ac0c59b9970caa8831eb85de8f2619cf2697c18723a",
+      "checks": [
+        {
+          "id": "t1",
+          "type": "test",
+          "name": "rejects empty password",
+          "pass": true
+        },
+        {
+          "id": "t2",
+          "type": "test",
+          "name": "accepts valid password",
+          "pass": true
+        },
+        {
+          "id": "t3",
+          "type": "test",
+          "name": "returns EMPTY_PASSWORD code",
+          "pass": true
+        },
+        {
+          "id": "t4",
+          "type": "test",
+          "name": "locks after 5 failed attempts",
+          "pass": true
+        },
+        {
+          "id": "t5",
+          "type": "test",
+          "name": "existing session tests still pass",
+          "pass": true
+        },
+        {
+          "id": "a1",
+          "type": "ai",
+          "question": "Did the patch change only files under src/auth/?",
+          "pass": true,
+          "votes": [
+            {
+              "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "z-ai/glm-5.3-flash",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "Qwen/Qwen3.8-27B",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            }
+          ]
+        },
+        {
+          "id": "a2",
+          "type": "ai",
+          "question": "Does the patch do what the description asks, without unrelated changes?",
+          "pass": true,
+          "votes": [
+            {
+              "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "z-ai/glm-5.3-flash",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "Qwen/Qwen3.8-27B",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            }
+          ]
+        }
+      ],
+      "checks_passed": 7,
+      "checks_total": 7,
+      "score_bps": 10000,
+      "isolation": "docker",
+      "problems": [],
+      "judged_at_ms": 1794319860005
+    },
+    "6": {
+      "job_id": 6,
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "patch_hash": "f8b0d8dae97ad38ca3fd87dd46ec06d0cbe769c98396702bad5a5d881c96ecf9",
+      "checks": [
+        {
+          "id": "t1",
+          "type": "test",
+          "name": "rejects empty password",
+          "pass": true
+        },
+        {
+          "id": "t2",
+          "type": "test",
+          "name": "accepts valid password",
+          "pass": true
+        },
+        {
+          "id": "t3",
+          "type": "test",
+          "name": "returns EMPTY_PASSWORD code",
+          "pass": true
+        },
+        {
+          "id": "t4",
+          "type": "test",
+          "name": "locks after 5 failed attempts",
+          "pass": true
+        },
+        {
+          "id": "t5",
+          "type": "test",
+          "name": "existing session tests still pass",
+          "pass": true
+        },
+        {
+          "id": "a1",
+          "type": "ai",
+          "question": "Did the patch change only files under src/auth/?",
+          "pass": false,
+          "votes": [
+            {
+              "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+              "pass": false,
+              "reason": "The patch also changes session token length and the lockout counter, which the spec did not ask for.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "z-ai/glm-5.3-flash",
+              "pass": false,
+              "reason": "The patch also changes session token length and the lockout counter, which the spec did not ask for.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "Qwen/Qwen3.8-27B",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            }
+          ]
+        },
+        {
+          "id": "a2",
+          "type": "ai",
+          "question": "Does the patch do what the description asks, without unrelated changes?",
+          "pass": false,
+          "votes": [
+            {
+              "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+              "pass": false,
+              "reason": "The patch also changes session token length and the lockout counter, which the spec did not ask for.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "z-ai/glm-5.3-flash",
+              "pass": false,
+              "reason": "The patch also changes session token length and the lockout counter, which the spec did not ask for.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "Qwen/Qwen3.8-27B",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            }
+          ]
+        }
+      ],
+      "checks_passed": 5,
+      "checks_total": 7,
+      "score_bps": 7142,
+      "isolation": "docker",
+      "problems": [],
+      "judged_at_ms": 1794320940006
+    },
+    "7": {
+      "job_id": 7,
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "patch_hash": "134199c8cb34dcd8aaa7b2c747b82ed6d1cf426171dc7c0ed1b86e337389b2bd",
+      "checks": [
+        {
+          "id": "t1",
+          "type": "test",
+          "name": "rejects empty password",
+          "pass": true
+        },
+        {
+          "id": "t2",
+          "type": "test",
+          "name": "accepts valid password",
+          "pass": true
+        },
+        {
+          "id": "t3",
+          "type": "test",
+          "name": "returns EMPTY_PASSWORD code",
+          "pass": true
+        },
+        {
+          "id": "t4",
+          "type": "test",
+          "name": "locks after 5 failed attempts",
+          "pass": true
+        },
+        {
+          "id": "t5",
+          "type": "test",
+          "name": "existing session tests still pass",
+          "pass": true
+        },
+        {
+          "id": "a1",
+          "type": "ai",
+          "question": "Did the patch change only files under src/auth/?",
+          "pass": true,
+          "votes": [
+            {
+              "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "z-ai/glm-5.3-flash",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "Qwen/Qwen3.8-27B",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            }
+          ]
+        },
+        {
+          "id": "a2",
+          "type": "ai",
+          "question": "Does the patch do what the description asks, without unrelated changes?",
+          "pass": true,
+          "votes": [
+            {
+              "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "z-ai/glm-5.3-flash",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "Qwen/Qwen3.8-27B",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            }
+          ]
+        }
+      ],
+      "checks_passed": 7,
+      "checks_total": 7,
+      "score_bps": 10000,
+      "isolation": "docker",
+      "problems": [],
+      "judged_at_ms": 1794322020007
+    },
+    "8": {
+      "job_id": 8,
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "patch_hash": "2ffe902a6c5f20ebae7bae44f2eab2d0dad902b9fd2b38316d19fc6c92af807e",
+      "checks": [
+        {
+          "id": "t1",
+          "type": "test",
+          "name": "rejects empty password",
+          "pass": true
+        },
+        {
+          "id": "t2",
+          "type": "test",
+          "name": "accepts valid password",
+          "pass": true
+        },
+        {
+          "id": "t3",
+          "type": "test",
+          "name": "returns EMPTY_PASSWORD code",
+          "pass": true
+        },
+        {
+          "id": "t4",
+          "type": "test",
+          "name": "locks after 5 failed attempts",
+          "pass": true
+        },
+        {
+          "id": "t5",
+          "type": "test",
+          "name": "existing session tests still pass",
+          "pass": true
+        },
+        {
+          "id": "a1",
+          "type": "ai",
+          "question": "Did the patch change only files under src/auth/?",
+          "pass": true,
+          "votes": [
+            {
+              "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "z-ai/glm-5.3-flash",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "Qwen/Qwen3.8-27B",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            }
+          ]
+        },
+        {
+          "id": "a2",
+          "type": "ai",
+          "question": "Does the patch do what the description asks, without unrelated changes?",
+          "pass": true,
+          "votes": [
+            {
+              "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "z-ai/glm-5.3-flash",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "Qwen/Qwen3.8-27B",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            }
+          ]
+        }
+      ],
+      "checks_passed": 7,
+      "checks_total": 7,
+      "score_bps": 10000,
+      "isolation": "docker",
+      "problems": [],
+      "judged_at_ms": 1794323100008
+    },
+    "9": {
+      "job_id": 9,
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "patch_hash": "4137bd1d7c7d315b3b596a7f984e72e7ed73cbf17e6e8fd5ea3c5cf2ae6511cc",
+      "checks": [
+        {
+          "id": "t1",
+          "type": "test",
+          "name": "rejects empty password",
+          "pass": false
+        },
+        {
+          "id": "t2",
+          "type": "test",
+          "name": "accepts valid password",
+          "pass": true
+        },
+        {
+          "id": "t3",
+          "type": "test",
+          "name": "returns EMPTY_PASSWORD code",
+          "pass": false
+        },
+        {
+          "id": "t4",
+          "type": "test",
+          "name": "locks after 5 failed attempts",
+          "pass": false
+        },
+        {
+          "id": "t5",
+          "type": "test",
+          "name": "existing session tests still pass",
+          "pass": false
+        },
+        {
+          "id": "a1",
+          "type": "ai",
+          "question": "Did the patch change only files under src/auth/?",
+          "pass": true,
+          "votes": [
+            {
+              "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "z-ai/glm-5.3-flash",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "Qwen/Qwen3.8-27B",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            }
+          ]
+        },
+        {
+          "id": "a2",
+          "type": "ai",
+          "question": "Does the patch do what the description asks, without unrelated changes?",
+          "pass": false,
+          "votes": [
+            {
+              "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+              "pass": false,
+              "reason": "The patch also changes session token length and the lockout counter, which the spec did not ask for.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "z-ai/glm-5.3-flash",
+              "pass": false,
+              "reason": "The patch also changes session token length and the lockout counter, which the spec did not ask for.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "Qwen/Qwen3.8-27B",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            }
+          ]
+        }
+      ],
+      "checks_passed": 2,
+      "checks_total": 7,
+      "score_bps": 2857,
+      "isolation": "docker",
+      "problems": [],
+      "judged_at_ms": 1794324180009
+    },
+    "10": {
+      "job_id": 10,
+      "spec_hash": "7e266b3d386264109ad34c76179a6cf9db0a4415bb4ef0753d9a3548abb121d9",
+      "patch_hash": "2495d65063c0a74aaf66f86fc4e072e88cdd09424be554e15581debd5fef1f7d",
+      "checks": [
+        {
+          "id": "t1",
+          "type": "test",
+          "name": "rejects empty password",
+          "pass": true
+        },
+        {
+          "id": "t2",
+          "type": "test",
+          "name": "accepts valid password",
+          "pass": true
+        },
+        {
+          "id": "t3",
+          "type": "test",
+          "name": "returns EMPTY_PASSWORD code",
+          "pass": true
+        },
+        {
+          "id": "t4",
+          "type": "test",
+          "name": "locks after 5 failed attempts",
+          "pass": true
+        },
+        {
+          "id": "t5",
+          "type": "test",
+          "name": "existing session tests still pass",
+          "pass": true
+        },
+        {
+          "id": "a1",
+          "type": "ai",
+          "question": "Did the patch change only files under src/auth/?",
+          "pass": true,
+          "votes": [
+            {
+              "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "z-ai/glm-5.3-flash",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "Qwen/Qwen3.8-27B",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            }
+          ]
+        },
+        {
+          "id": "a2",
+          "type": "ai",
+          "question": "Does the patch do what the description asks, without unrelated changes?",
+          "pass": true,
+          "votes": [
+            {
+              "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "z-ai/glm-5.3-flash",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            },
+            {
+              "model": "Qwen/Qwen3.8-27B",
+              "pass": true,
+              "reason": "The diff stays inside src/auth/ and addresses the empty-password case.",
+              "attestation_verified": true,
+              "signature_verified": true,
+              "problems": []
+            }
+          ]
+        }
+      ],
+      "checks_passed": 7,
+      "checks_total": 7,
+      "score_bps": 10000,
+      "isolation": "docker",
+      "problems": [],
+      "judged_at_ms": 1794325260010
+    }
+  }
+}
