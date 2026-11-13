@@ -29,5 +29,6 @@ export function panelFromEnv(env = process.env): AiPanel {
     policy: policyFromEnv(env),
     verifyQuote: dcapVerifier,
     verifyGpu: nrasGpuVerifier(),
+    maxTokens: env.JUDGE_MAX_TOKENS ? Number(env.JUDGE_MAX_TOKENS) : undefined,
   });
 }

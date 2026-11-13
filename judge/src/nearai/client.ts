@@ -9,7 +9,7 @@ export type Fetcher = typeof fetch;
 export interface RawCompletion {
   requestBytes: Buffer;
   responseBytes: Buffer;
-  json: { id?: string; choices?: { message?: { content?: string | null; reasoning_content?: string | null } }[] };
+  json: { id?: string; choices?: { finish_reason?: string | null; message?: { content?: string | null; reasoning_content?: string | null } }[] };
 }
 
 export class NearAiError extends Error {
