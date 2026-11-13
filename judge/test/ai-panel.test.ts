@@ -23,10 +23,10 @@ function ctx(patch: string, allPass: boolean): CheckContext {
   };
 }
 
-function panel(behaviour: Record<string, Behaviour>) {
+function panel(behaviour: Record<string, Behaviour>, maxTokens?: number) {
   const fake = fakeNearAi(behaviour);
   const client = new NearAiClient("https://cloud-api.near.ai/v1", "test-key-123456789", fake.fetch, async () => {});
-  return { fake, panel: new NearAiPanel({ client, models: MODELS, verifyQuote: fakeQuoteVerifier, verifyGpu: fakeGpuVerifier }) };
+  return { fake, panel: new NearAiPanel({ client, models: MODELS, verifyQuote: fakeQuoteVerifier, verifyGpu: fakeGpuVerifier, maxTokens }) };
 }
 
 test("honest patch: all three verified judges pass both AI checks", async () => {
@@ -98,6 +98,44 @@ test("bad JSON always: counts as a fail vote after one retry", async () => {
   const v = out.results[0]!.votes.find((x) => x.model === MODELS[0])!;
   assert.equal(v.pass, false);
   assert.equal(v.reason, "no valid answer");
+});
+
+// Seen on testnet (job 5): GLM and Qwen reasoned past 600 tokens and returned no answer,
+// so an honest patch lost a check. The default budget leaves room for the reasoning.
+test("reasoning judges get enough tokens to answer", async () => {
+  const slow = { [MODELS[1]!]: "long-reasoning", [MODELS[2]!]: "long-reasoning" } as const;
+  const out = await panel(slow).panel.judge(ctx("honest-login-bug.diff", true), aiChecks);
+  for (const r of out.results) {
+    assert.equal(r.pass, true);
+    for (const v of r.votes) assert.equal(v.pass, true, `${v.model}: ${v.problems.join("; ")}`);
+  }
+});
+
+test("a reply cut off by the token limit is reported as such", async () => {
+  const { panel: p } = panel({ [MODELS[1]!]: "long-reasoning" }, 600);
+  const out = await p.judge(ctx("honest-login-bug.diff", true), aiChecks);
+  const v = out.results[0]!.votes.find((x) => x.model === MODELS[1])!;
+  assert.equal(v.pass, false);
+  assert.ok(v.problems.some((x) => /ran out of tokens/.test(x)), JSON.stringify(v.problems));
+});
+
+// Seen on testnet (job 9): DeepSeek got 429 service_overloaded and its vote was lost.
+test("an overloaded judge is retried with backoff and still counts", async () => {
+  const { panel: p, fake } = panel({ [MODELS[0]!]: "overloaded-once" });
+  const out = await p.judge(ctx("honest-login-bug.diff", true), aiChecks);
+  const v = out.results[0]!.votes.find((x) => x.model === MODELS[0])!;
+  assert.equal(v.pass, true, v.problems.join("; "));
+  assert.equal(v.signature_verified, true);
+  assert.equal(fake.calls.completions, 7); // 6 votes + 1 retried 429
+});
+
+test("a judge that stays overloaded gives up with a clear reason", async () => {
+  const { panel: p } = panel({ [MODELS[0]!]: "overloaded-always" });
+  const out = await p.judge(ctx("honest-login-bug.diff", true), aiChecks);
+  const v = out.results[0]!.votes.find((x) => x.model === MODELS[0])!;
+  assert.equal(v.pass, false);
+  assert.ok(v.problems.some((x) => /429.*gave up after 4 tries/s.test(x)), JSON.stringify(v.problems));
+  assert.equal(out.results[0]!.pass, true, "the other two verified judges still carry the check");
 });
 
 test("receipts keep exact bytes and the full report, never the API key", async () => {

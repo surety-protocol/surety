@@ -1,0 +1,35 @@
+{
+  "applied": true,
+  "apply_error": null,
+  "isolation": "tempdir",
+  "exit_code": 1,
+  "timed_out": false,
+  "tests": [
+    {
+      "name": "rejects empty password",
+      "pass": true,
+      "found": true
+    },
+    {
+      "name": "accepts valid password",
+      "pass": true,
+      "found": true
+    },
+    {
+      "name": "returns EMPTY_PASSWORD code",
+      "pass": false,
+      "found": true
+    },
+    {
+      "name": "locks after 5 failed attempts",
+      "pass": false,
+      "found": true
+    },
+    {
+      "name": "existing session tests still pass",
+      "pass": false,
+      "found": true
+    }
+  ],
+  "output_excerpt": "TAP version 13\n# Subtest: rejects empty password\nok 1 - rejects empty password\n  ---\n  duration_ms: 1.0599\n  type: 'test'\n  ...\n# Subtest: accepts valid password\nok 2 - accepts valid password\n  ---\n  duration_ms: 0.3588\n  type: 'test'\n  ...\n# Subtest: returns EMPTY_PASSWORD code\nnot ok 3 - returns EMPTY_PASSWORD code\n  ---\n  duration_ms: 1.1325\n  type: 'test'\n  location: 'C:\\\\Users\\\\USA\\\\AppData\\\\Local\\\\Temp\\\\surety-judge-7nxiVT\\\\repo\\\\test\\\\login.test.js:18:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    The validation function is expected to return \"true\". Received false\n    \n    Caught error:\n    \n    Error: no password\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  stack: |-\n    TestContext.<anonymous> (file:///C:/Users/USA/AppData/Local/Temp/surety-judge-7nxiVT/repo/test/login.test.js:20:10)\n    Test.runInAsyncScope (node:async_hooks:227:14)\n    Test.run (node:internal/test_runner/test:1382:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:960:18)\n    Test.postRun (node:internal/test_runner/test:1522:19)\n    Test.run (node:internal/test_runner/test:1447:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)\n  ...\n# Subtest: locks after 5 failed attempts\nnot ok 4 - locks after 5 failed attempts\n  ---\n  duration_ms: 0.6514\n  type: 'test'\n  location: 'C:\\\\Users\\\\USA\\\\AppData\\\\Local\\\\Temp\\\\surety-judge-7nxiVT\\\\repo\\\\test\\\\login.test.js:23:1'\n  failureType: 'testCodeFailure'\n  error: 'Missing expected exception.'\n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  stack: |-\n    TestContext.<anonymous> (file:///C:/Users/USA/AppData/Local/Temp/surety-judge-7nxiVT/repo/test/login.test.js:26:10)\n    Test.runInAsyncScope (node:async_hooks:227:14)\n    Test.run (node:internal/test_runner/test:1382:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:960:18)\n    Test.postRun (node:internal/test_runner/test:1522:19)\n    Test.run (node:internal/test_runner/test:1447:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)\n  ...\n# Subtest: existing session tests still pass\nnot ok 5 - existing session tests still pass\n  ---\n  duration_ms: 1.4036\n  type: 'test'\n  location: 'C:\\\\Users\\\\USA\\\\AppData\\\\Local\\\\Temp\\\\surety-judge-7nxiVT\\\\repo\\\\test\\\\session.test.js:5:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    The input did not match the regular expression /^[0-9a-f]{32}$/. Input:\n    \n    '22f2fce4a16c797e'\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected:\n  actual: '22f2fce4a16c797e'\n  operator: 'match'\n  stack: |-\n    TestContext.<anonymous> (file:///C:/Users/USA/AppData/Local/Temp/surety-judge-7nxiVT/repo/test/session.test.js:9:10)\n    Test.runInAsyncScope (node:async_hooks:227:14)\n    Test.run (node:internal/test_runner/test:1382:25)\n    Test.start (node:internal/test_runner/test:1242:17)\n    startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)\n  ...\n1..5\n# tests 5\n# suites 0\n# pass 2\n# fail 3\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 97.9349\n"
+}

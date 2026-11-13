@@ -1,0 +1,35 @@
+{
+  "applied": true,
+  "apply_error": null,
+  "isolation": "tempdir",
+  "exit_code": 0,
+  "timed_out": false,
+  "tests": [
+    {
+      "name": "rejects empty password",
+      "pass": true,
+      "found": true
+    },
+    {
+      "name": "accepts valid password",
+      "pass": true,
+      "found": true
+    },
+    {
+      "name": "returns EMPTY_PASSWORD code",
+      "pass": true,
+      "found": true
+    },
+    {
+      "name": "locks after 5 failed attempts",
+      "pass": true,
+      "found": true
+    },
+    {
+      "name": "existing session tests still pass",
+      "pass": true,
+      "found": true
+    }
+  ],
+  "output_excerpt": "TAP version 13\n# Subtest: rejects empty password\nok 1 - rejects empty password\n  ---\n  duration_ms: 1.6236\n  type: 'test'\n  ...\n# Subtest: accepts valid password\nok 2 - accepts valid password\n  ---\n  duration_ms: 0.4673\n  type: 'test'\n  ...\n# Subtest: returns EMPTY_PASSWORD code\nok 3 - returns EMPTY_PASSWORD code\n  ---\n  duration_ms: 0.4027\n  type: 'test'\n  ...\n# Subtest: locks after 5 failed attempts\nok 4 - locks after 5 failed attempts\n  ---\n  duration_ms: 0.2856\n  type: 'test'\n  ...\n# Subtest: existing session tests still pass\nok 5 - existing session tests still pass\n  ---\n  duration_ms: 1.9928\n  type: 'test'\n  ...\n1..5\n# tests 5\n# suites 0\n# pass 5\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 132.5529\n"
+}

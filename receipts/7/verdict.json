@@ -1,0 +1,107 @@
+{
+  "job_id": 7,
+  "spec_hash": "e9ab11b6a93b80129338925b1aa4de677bd8f5bab0351a658c9cc72c13003262",
+  "patch_hash": "2623bd9e378e15e7e7af46fac244bbe49b07dbf55944e11afa6469bb67335f80",
+  "checks": [
+    {
+      "id": "t1",
+      "type": "test",
+      "name": "rejects empty password",
+      "pass": true
+    },
+    {
+      "id": "t2",
+      "type": "test",
+      "name": "accepts valid password",
+      "pass": true
+    },
+    {
+      "id": "t3",
+      "type": "test",
+      "name": "returns EMPTY_PASSWORD code",
+      "pass": true
+    },
+    {
+      "id": "t4",
+      "type": "test",
+      "name": "locks after 5 failed attempts",
+      "pass": true
+    },
+    {
+      "id": "t5",
+      "type": "test",
+      "name": "existing session tests still pass",
+      "pass": true
+    },
+    {
+      "id": "a1",
+      "type": "ai",
+      "question": "Did the patch change only files under src/auth/?",
+      "pass": true,
+      "votes": [
+        {
+          "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+          "pass": true,
+          "reason": "The patch modifies only src/auth/login.js, which is under the allowed src/auth/ path.",
+          "attestation_verified": true,
+          "signature_verified": true,
+          "problems": []
+        },
+        {
+          "model": "z-ai/glm-5.3-flash",
+          "pass": true,
+          "reason": "The diff modifies only src/auth/login.js, which is within the allowed src/auth/ path; no other files are touched.",
+          "attestation_verified": true,
+          "signature_verified": true,
+          "problems": []
+        },
+        {
+          "model": "Qwen/Qwen3.8-27B",
+          "pass": true,
+          "reason": "The patch only modifies src/auth/login.js, which is under src/auth/.",
+          "attestation_verified": true,
+          "signature_verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "id": "a2",
+      "type": "ai",
+      "question": "Does the patch do what the description asks, without unrelated changes?",
+      "pass": true,
+      "votes": [
+        {
+          "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+          "pass": true,
+          "reason": "The patch adds an EMPTY_PASSWORD rejection for empty passwords and removes the now-redundant password guard without altering lockout or session behavior for non-empty passwords. The change is confined to src/auth/login.js and matches the requested fix.",
+          "attestation_verified": true,
+          "signature_verified": true,
+          "problems": []
+        },
+        {
+          "model": "z-ai/glm-5.3-flash",
+          "pass": true,
+          "reason": "The patch adds an EMPTY_PASSWORD rejection for falsy passwords before the comparison, fixes the previously buggy fall-through by removing the now-redundant `password &&` guard on the same check, touches only the allowed file, and leaves lockout and session logic untouched (all related tests pass).",
+          "attestation_verified": true,
+          "signature_verified": true,
+          "problems": []
+        },
+        {
+          "model": "Qwen/Qwen3.8-27B",
+          "pass": true,
+          "reason": "The patch rejects empty passwords with EMPTY_PASSWORD before authentication, preserves the existing lockout check and failure counting, and only changes the allowed file.",
+          "attestation_verified": true,
+          "signature_verified": true,
+          "problems": []
+        }
+      ]
+    }
+  ],
+  "checks_passed": 7,
+  "checks_total": 7,
+  "score_bps": 10000,
+  "isolation": "tempdir",
+  "problems": [],
+  "judged_at_ms": 1794580625993
+}
