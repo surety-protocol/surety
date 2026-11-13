@@ -55,6 +55,8 @@ export function keysFromEnv(): Map<string, string> {
     add(`sloppy-agent.${parent}`, process.env.SLOPPY_AGENT_PRIVATE_KEY);
     add(`cheater-agent.${parent}`, process.env.CHEATER_AGENT_PRIVATE_KEY);
     add(`backer.${parent}`, process.env.BACKER_PRIVATE_KEY);
+    // The cheater's sock puppets post its self-dealt jobs in the demo.
+    for (const i of [1, 2, 3]) add(`fake-client-${i}.${parent}`, process.env[`FAKE_CLIENT_${i}_PRIVATE_KEY`]);
   }
   return keys;
 }

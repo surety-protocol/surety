@@ -1,369 +1,128 @@
-/**
- * scripts/deploy.mjs
- *
- * Builds and deploys the Surety contracts to NEAR testnet.
- *
- * What it does
- * ────────────
- * 1. Builds token/ and contract/ via `cargo near build --no-abi`
- * 2. Deploys tusdc WASM to tusdc.<parent>
- * 3. Deploys surety-core WASM to core.<parent>
- * 4. Calls new(token_id, judge_id, panel_id, null) on core.<parent>
- *    (uses default Config from the contract — SPEC §4.1 defaults)
- * 5. Mints initial tUSDC demo balances to all participant accounts
- * 6. Registers storage deposits for all participants on the token contract
- * 7. Updates deployments/testnet.json with wasm hashes and deployed_at timestamp
- *
- * Usage
- * ─────
- *   node scripts/deploy.mjs
- *
- * Flags
- * ─────
- *   --reset-state   Pass a migrate/reset init call if the contract needs fresh state.
- *                   Default: skip init if contract is already initialised.
- *   --skip-build    Skip the cargo build step (use existing WASM files).
- */
+// npm run deploy [-- --skip-build]
+//
+// Builds and deploys the token and the Surety contract to the accounts made by
+// setup-testnet.mjs, then funds the demo accounts. Safe to re-run: code is only
+// redeployed when it changed, init only runs once, mints only top balances up.
+//
+//   1. npm run contract:build (same build CI uses, wasm with target-cpu=mvp)
+//   2. Tops up core and tusdc so they can pay for their code storage
+//      (1 NEAR per 100 kB), then deploys both
+//   3. tusdc.new(owner_id = tusdc), core.new(token, judge, panel, config = null -> defaults)
+//   4. Registers every account on the token (storage_deposit)
+//   5. Mints demo tUSDC: client and backer 10,000; agents and fake clients 1,000
+//   6. Updates deployments/testnet.json
+//
+// Based on Osuochasam's script in surety-protocol/surety-contract#2.
 
-import 'dotenv/config';
-import { execSync }  from 'child_process';
-import { readFileSync, existsSync, mkdirSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { execSync } from "node:child_process";
+import { createHash } from "node:crypto";
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
+import { baseEncode } from "near-api-js";
 import {
-  nearConnect, loadKey, getAccount,
-  registerStorageDeposit, mintTokens, upsertEnv,
-  readDeployments, writeDeployments, accountIdToEnvKey,
-  DEPLOYMENTS_DIR, DEFAULT_GAS, ONE_NEAR,
-  keyStore, NETWORK_ID,
-} from './lib/near.mjs';
+  ACCOUNTS, AGENTS, NEAR, ROOT, STORAGE_PRICE_PER_BYTE, TGAS, call, connect, deploymentFor, fail,
+  formatNear, formatTusdc, requireEnv, requireTestnet, txUrl, writeDeployments,
+} from "./lib/near.mjs";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT      = join(__dirname, '..');
+const SKIP_BUILD = process.argv.includes("--skip-build");
+const WASM_DIR = join(ROOT, "target", "wasm32-unknown-unknown", "release");
+const TOKEN_WASM = join(WASM_DIR, "tusdc_token.wasm");
+const CORE_WASM = join(WASM_DIR, "surety_core.wasm");
+/** NEAR kept on top of code storage, for contract state and gas. */
+const STATE_MARGIN = 1n * NEAR;
 
-// ── CLI flags ─────────────────────────────────────────────────────────────────
-
-const RESET_STATE  = process.argv.includes('--reset-state');
-const SKIP_BUILD   = process.argv.includes('--skip-build');
-
-// ── WASM output locations (cargo near build writes here) ─────────────────────
-
-const TOKEN_WASM_PATH    = join(ROOT, 'target', 'near', 'tusdc_token.wasm');
-const CONTRACT_WASM_PATH = join(ROOT, 'target', 'near', 'surety_core.wasm');
-
-// ── Demo mint amounts ─────────────────────────────────────────────────────────
-
-/** 10,000 tUSDC per participant (6 decimal places → 10_000 * 1_000_000) */
-const DEMO_MINT_AMOUNT = '10000000000';
-
-// ── Validate environment ──────────────────────────────────────────────────────
-
-const PARENT     = process.env.NEAR_PARENT?.trim();
-const PARENT_KEY = process.env.NEAR_PARENT_PRIVATE_KEY?.trim();
-
-if (!PARENT || !PARENT_KEY) {
-  console.error('❌  Missing NEAR_PARENT or NEAR_PARENT_PRIVATE_KEY in .env');
-  console.error('    Run scripts/setup-testnet.mjs first.');
-  process.exit(1);
-}
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
-/**
- * Load a named account from .env keys, falling back to envUpdates for
- * keys written during the same session.
- */
-function loadAccountKey(near, accountId) {
-  const envKey = accountIdToEnvKey(accountId) + '_PRIVATE_KEY';
-  const privKey = process.env[envKey];
-  if (!privKey) throw new Error(`No private key in .env for ${accountId}  (looked for ${envKey})`);
-  loadKey(accountId, privKey);
-  return near.account(accountId);
-}
-
-/**
- * Run a shell command synchronously, streaming stdout/stderr to the console.
- */
-function run(cmd, cwd = ROOT) {
-  console.log(`\n  $ ${cmd}`);
-  execSync(cmd, { cwd, stdio: 'inherit', shell: true });
-}
-
-/**
- * Read a deployed WASM file and return its contents as a Buffer.
- */
-function readWasm(wasmPath) {
-  if (!existsSync(wasmPath)) {
-    throw new Error(`WASM not found at ${wasmPath}. Run without --skip-build to compile.`);
-  }
-  return readFileSync(wasmPath);
-}
-
-/**
- * Check whether a NEAR contract is already initialised by calling a
- * read-only view method.  Returns true if the call succeeds.
- */
-async function isInitialised(account, contractId) {
-  try {
-    await account.viewFunction({ contractId, methodName: 'get_config', args: {} });
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-// ── Main ──────────────────────────────────────────────────────────────────────
+const TUSDC = 1_000_000n; // 6 decimals
+const MINT = { client: 10_000n * TUSDC, backer: 10_000n * TUSDC, agent: 1_000n * TUSDC, fakeClient: 1_000n * TUSDC };
 
 async function main() {
-  console.log('\n╔══════════════════════════════════════════════╗');
-  console.log('║   Surety — Contract Deploy                   ║');
-  console.log('╚══════════════════════════════════════════════╝\n');
-  console.log(`Parent : ${PARENT}`);
-  console.log(`Reset  : ${RESET_STATE}`);
-  console.log(`Build  : ${!SKIP_BUILD}\n`);
+  const { parent: parentId, rpcUrl } = requireTestnet();
+  const dep = deploymentFor(parentId);
+  const chain = connect(rpcUrl);
+  const parent = chain.account(parentId, requireEnv("NEAR_PARENT_PRIVATE_KEY"));
+  const token = chain.account(dep.token_id, requireEnv(ACCOUNTS.tusdc, "run npm run setup:testnet first"));
+  const core = chain.account(dep.contract_id, requireEnv(ACCOUNTS.core, "run npm run setup:testnet first"));
 
-  // ── Step 1: Build contracts ───────────────────────────────────────────────
-  if (!SKIP_BUILD) {
-    console.log('── Step 1: Building contracts ───────────────────────────────────');
-    console.log('  Building token/ …');
-    run('cargo near build --no-abi', join(ROOT, 'token'));
-    console.log('\n  Building contract/ …');
-    run('cargo near build --no-abi', join(ROOT, 'contract'));
-    console.log('\n  ✅  Build complete\n');
-  } else {
-    console.log('── Step 1: Skipping build (--skip-build flag)\n');
-    if (!existsSync(TOKEN_WASM_PATH) || !existsSync(CONTRACT_WASM_PATH)) {
-      throw new Error('WASM files not found — remove --skip-build to compile first.');
+  if (execSync("git ls-files .env", { cwd: ROOT }).toString().trim()) fail(".env is tracked by git. Remove it from the index before deploying.");
+
+  console.log(`\nSurety deploy\n  parent: ${parentId}\n  core:   ${dep.contract_id}\n  token:  ${dep.token_id}\n`);
+
+  // 1. Build
+  if (SKIP_BUILD) console.log("1. Build skipped (--skip-build)");
+  else {
+    console.log("1. Building (npm run contract:build)");
+    execSync("npm run contract:build", { cwd: ROOT, stdio: "inherit" });
+  }
+  for (const f of [TOKEN_WASM, CORE_WASM]) if (!existsSync(f)) fail(`${f} not found. Run without --skip-build.`);
+
+  // 2. Fund + deploy code
+  console.log("\n2. Deploying code");
+  for (const [acct, file] of [[token, TOKEN_WASM], [core, CORE_WASM]]) {
+    const code = readFileSync(file);
+    const need = BigInt(code.length) * STORAGE_PRICE_PER_BYTE + STATE_MARGIN;
+    const state = await acct.getState();
+    if (state.balance.total < need) {
+      const top = need - state.balance.total;
+      await parent.transfer({ receiverId: acct.accountId, amount: top });
+      console.log(`  + sent ${formatNear(top)} NEAR to ${acct.accountId} for ${(code.length / 1000).toFixed(0)} kB of code`);
     }
-  }
-
-  // ── Load WASM ─────────────────────────────────────────────────────────────
-  const tokenWasm    = readWasm(TOKEN_WASM_PATH);
-  const contractWasm = readWasm(CONTRACT_WASM_PATH);
-  console.log(`  Token WASM     : ${tokenWasm.byteLength.toLocaleString()} bytes`);
-  console.log(`  Contract WASM  : ${contractWasm.byteLength.toLocaleString()} bytes\n`);
-
-  // ── Load parent and all needed accounts ───────────────────────────────────
-  loadKey(PARENT, PARENT_KEY);
-  const near   = await nearConnect();
-  const parent = await near.account(PARENT);
-
-  const tusdcId  = `tusdc.${PARENT}`;
-  const coreId   = `core.${PARENT}`;
-  const judgeId  = `judge.${PARENT}`;
-  const panelId  = `panel.${PARENT}`;
-  const clientId = `client.${PARENT}`;
-  const backerId = `backer.${PARENT}`;
-
-  const agentIds = [
-    `honest-agent.${PARENT}`,
-    `sloppy-agent.${PARENT}`,
-    `cheater-agent.${PARENT}`,
-  ];
-  const fakeClientIds = [
-    `fake-client-1.${PARENT}`,
-    `fake-client-2.${PARENT}`,
-    `fake-client-3.${PARENT}`,
-  ];
-
-  const tusdcAccount = await loadAccountKey(near, tusdcId);
-  const coreAccount  = await loadAccountKey(near, coreId);
-
-  // ── Step 2: Deploy tusdc token ────────────────────────────────────────────
-  console.log('── Step 2: Deploying tusdc token ────────────────────────────────');
-  await tusdcAccount.deployContract(tokenWasm);
-  console.log(`  ✅  Deployed tusdc token to ${tusdcId}\n`);
-
-  // Initialise token contract (owner = tusdcId itself so it can mint).
-  // The init is idempotent — if already initialised we skip.
-  let tusdcInitialised = false;
-  try {
-    await tusdcAccount.viewFunction({
-      contractId: tusdcId,
-      methodName: 'ft_metadata',
-      args: {},
-    });
-    tusdcInitialised = true;
-    console.log('  ✓  tusdc already initialised — skipping init\n');
-  } catch {
-    tusdcInitialised = false;
-  }
-
-  if (!tusdcInitialised) {
-    await tusdcAccount.functionCall({
-      contractId:      tusdcId,
-      methodName:      'new',
-      args:             { owner_id: tusdcId },
-      gas:              DEFAULT_GAS,
-      attachedDeposit:  0n,
-    });
-    console.log('  ✅  tusdc initialised (owner = tusdc account)\n');
-  }
-
-  // ── Step 3: Deploy surety-core contract ───────────────────────────────────
-  console.log('── Step 3: Deploying surety-core contract ───────────────────────');
-  await coreAccount.deployContract(contractWasm);
-  console.log(`  ✅  Deployed surety-core to ${coreId}\n`);
-
-  // ── Step 4: Initialise surety-core ────────────────────────────────────────
-  console.log('── Step 4: Initialising surety-core ─────────────────────────────');
-
-  if (!RESET_STATE && await isInitialised(coreAccount, coreId)) {
-    console.log('  ✓  surety-core already initialised — skipping\n');
-    console.log('     Tip: use --reset-state flag to force re-initialisation.\n');
-  } else {
-    /**
-     * new(token_id, judge_id, panel_id, config)
-     *   config = null  →  use the default Config::new_with_panel(panel_id)
-     *
-     * SPEC §4.1 defaults (embedded in the contract):
-     *   min_bond:               100_000_000  (100 tUSDC)
-     *   reference_value:         50_000_000  (50 tUSDC)
-     *   penalty_bps:               2000      (20%)
-     *   client_share_bps:          5000      (50%)
-     *   max_leverage:                 8
-     *   base_fee_bps:               100      (1%)
-     *   loading_milli:             1500      (1.5×)
-     *   default_min_score_bps:     5000
-     *   appeal_window_ms:        120_000      (2 min)
-     *   appeal_deposit:           5_000_000  (5 tUSDC)
-     *   withdraw_cooldown_ms:     60_000      (1 min)
-     *   max_backers_per_agent:        20
-     */
-    await coreAccount.functionCall({
-      contractId:      coreId,
-      methodName:      'new',
-      args:             {
-        token_id:  tusdcId,
-        judge_id:  judgeId,
-        panel_id:  panelId,
-        config:    null,          // use contract defaults
-      },
-      gas:              DEFAULT_GAS,
-      attachedDeposit:  0n,
-    });
-    console.log('  ✅  surety-core initialised\n');
-    console.log(`     token_id  : ${tusdcId}`);
-    console.log(`     judge_id  : ${judgeId}`);
-    console.log(`     panel_id  : ${panelId}\n`);
-  }
-
-  // ── Step 5: Register storage deposits ────────────────────────────────────
-  console.log('── Step 5: Registering storage deposits on tusdc ────────────────');
-
-  const allParticipants = [
-    PARENT,
-    tusdcId,
-    coreId,
-    judgeId,
-    panelId,
-    clientId,
-    backerId,
-    ...agentIds,
-    ...fakeClientIds,
-  ];
-
-  for (const accountId of allParticipants) {
-    await registerStorageDeposit(tusdcAccount, tusdcId, accountId);
-  }
-  console.log('  ✅  Storage deposits complete\n');
-
-  // ── Step 6: Mint demo balances ────────────────────────────────────────────
-  console.log('── Step 6: Minting demo tUSDC balances ──────────────────────────');
-  console.log(`  Amount per account: ${Number(DEMO_MINT_AMOUNT).toLocaleString()} units = 10,000 tUSDC\n`);
-
-  const mintTargets = [
-    clientId,
-    backerId,
-    ...agentIds,
-    ...fakeClientIds,
-  ];
-
-  for (const accountId of mintTargets) {
-    await mintTokens(tusdcAccount, tusdcId, accountId, DEMO_MINT_AMOUNT);
-  }
-  console.log('\n  ✅  Minting complete\n');
-
-  // ── Step 7: Update deployments/testnet.json ───────────────────────────────
-  console.log('── Step 7: Updating deployments/testnet.json ────────────────────');
-
-  const existing = readDeployments();
-  const deployments = {
-    ...existing,
-    network:     'testnet',
-    parent:       PARENT,
-    token_id:    tusdcId,
-    core_id:     coreId,
-    judge_id:    judgeId,
-    panel_id:    panelId,
-    accounts: {
-      ...(existing.accounts || {}),
-      core:          coreId,
-      tusdc:         tusdcId,
-      judge:         judgeId,
-      panel:         panelId,
-      client:        clientId,
-      honest_agent:  `honest-agent.${PARENT}`,
-      sloppy_agent:  `sloppy-agent.${PARENT}`,
-      cheater_agent: `cheater-agent.${PARENT}`,
-      fake_client_1: `fake-client-1.${PARENT}`,
-      fake_client_2: `fake-client-2.${PARENT}`,
-      fake_client_3: `fake-client-3.${PARENT}`,
-      backer:        backerId,
-    },
-    token_wasm_bytes:    tokenWasm.byteLength,
-    contract_wasm_bytes: contractWasm.byteLength,
-    deployed_at:         new Date().toISOString(),
-  };
-
-  writeDeployments(deployments);
-  console.log('  ✅  deployments/testnet.json updated\n');
-
-  // ── Security check: make sure no secrets sneak into git ───────────────────
-  console.log('── Security check ───────────────────────────────────────────────');
-  try {
-    const diff = execSync('git diff --cached --name-only', { cwd: ROOT }).toString();
-    const dangerous = diff.split('\n').filter(f =>
-      f.includes('.env') || f.toLowerCase().includes('private') || f.includes('secret')
-    );
-    if (dangerous.length > 0) {
-      console.error('❌  SECURITY ALERT: staged files may contain secrets:');
-      dangerous.forEach(f => console.error(`     ${f}`));
-      console.error('    Unstage them before committing!');
-      process.exit(1);
+    const hash = baseEncode(createHash("sha256").update(code).digest());
+    if (state.codeHash === hash) {
+      console.log(`  ✓ ${acct.accountId} already runs this code`);
+      continue;
     }
-    console.log('  ✅  No secrets detected in staged files\n');
-  } catch {
-    // git not available or not in a repo — skip check
-    console.log('  ⚠  git check skipped (not a git repo or git unavailable)\n');
+    const r = await acct.deployContract(new Uint8Array(code));
+    console.log(`  + deployed ${file.split(/[\\/]/).pop()} to ${acct.accountId}  ${txUrl(r.transaction.hash)}`);
   }
 
-  // ── Final summary ─────────────────────────────────────────────────────────
-  console.log('╔══════════════════════════════════════════════════════════════════╗');
-  console.log('║   Deployment live on NEAR testnet!                               ║');
-  console.log('╚══════════════════════════════════════════════════════════════════╝\n');
-  console.log('  Token contract  :', tusdcId);
-  console.log('  Core contract   :', coreId);
-  console.log('  Judge account   :', judgeId);
-  console.log('  Panel account   :', panelId);
-  console.log('');
-  console.log('  Explorer links:');
-  console.log(`    https://testnet.nearblocks.io/address/${coreId}`);
-  console.log(`    https://testnet.nearblocks.io/address/${tusdcId}`);
-  console.log('');
-  console.log('  Point the judge service at:');
-  console.log(`    CONTRACT_ID=${coreId}`);
-  console.log(`    TOKEN_ID=${tusdcId}`);
-  console.log(`    JUDGE_ACCOUNT=${judgeId}`);
-  console.log('');
-  console.log('  Next step: node scripts/demo.mjs\n');
+  // 3. Init
+  console.log("\n3. Init");
+  if (await chain.view(dep.token_id, "ft_metadata").then(() => true, () => false)) console.log(`  ✓ ${dep.token_id} already initialised`);
+  else {
+    const r = await call(token, dep.token_id, "new", { owner_id: dep.token_id });
+    console.log(`  + ${dep.token_id}.new(owner_id = ${dep.token_id})  ${txUrl(r.tx)}`);
+  }
+  if (await chain.view(dep.contract_id, "get_config").then(() => true, () => false)) console.log(`  ✓ ${dep.contract_id} already initialised`);
+  else {
+    const r = await call(core, dep.contract_id, "new", { token_id: dep.token_id, judge_id: dep.judge_id, panel_id: dep.panel_id, config: null });
+    console.log(`  + ${dep.contract_id}.new(token, judge, panel, default config)  ${txUrl(r.tx)}`);
+  }
+
+  // 4. Token storage for every account (core must be registered to receive ft_transfer_call)
+  console.log("\n4. Token storage");
+  const everyone = [parentId, ...Object.values(dep.accounts)];
+  const bounds = await chain.view(dep.token_id, "storage_balance_bounds");
+  let registered = 0;
+  for (const id of everyone) {
+    if (await chain.view(dep.token_id, "storage_balance_of", { account_id: id })) continue;
+    await call(token, dep.token_id, "storage_deposit", { account_id: id, registration_only: true }, { deposit: BigInt(bounds.min) });
+    registered++;
+  }
+  console.log(`  ✓ ${everyone.length} accounts registered (${registered} new)`);
+
+  // 5. Demo balances (mint takes no deposit; only tops up to the target)
+  console.log("\n5. Demo tUSDC");
+  const targets = [
+    [dep.accounts.client, MINT.client],
+    [dep.accounts.backer, MINT.backer],
+    ...AGENTS.map((a) => [`${a}.${parentId}`, MINT.agent]),
+    ...[1, 2, 3].map((i) => [`fake-client-${i}.${parentId}`, MINT.fakeClient]),
+  ];
+  for (const [id, target] of targets) {
+    const have = BigInt(await chain.view(dep.token_id, "ft_balance_of", { account_id: id }));
+    if (have >= target) {
+      console.log(`  ✓ ${id}: ${formatTusdc(have)} tUSDC`);
+      continue;
+    }
+    await call(token, dep.token_id, "mint", { account_id: id, amount: (target - have).toString() }, { gas: 30n * TGAS });
+    console.log(`  + ${id}: minted ${formatTusdc(target - have)} tUSDC`);
+  }
+
+  // 6. Public record
+  writeDeployments({ ...dep, deployed_at: new Date().toISOString() });
+  console.log("\n6. Updated deployments/testnet.json");
+
+  console.log(`\nLive on testnet: https://testnet.nearblocks.io/address/${dep.contract_id}`);
+  console.log("Next: npm run testnet:smoke (contract only, no AI) or npm run judge-demo (full demo with the judge)\n");
 }
 
-// Only auto-run when this file is the entry point (not when imported).
-if (process.argv[1] && new URL(import.meta.url).pathname.endsWith(process.argv[1].replace(/\\/g, '/').split('/').pop())) {
-  main().catch(err => {
-    console.error('\n❌  Deploy failed:', err);
-    process.exit(1);
-  });
-}
-export { main };
+main().catch((e) => fail(`deploy failed: ${e?.message ?? e}`));
