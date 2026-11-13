@@ -4,8 +4,8 @@
 #
 #   bash .github/protect-main.sh
 #
-# Result: main only changes through a pull request, CI must pass on all three
-# test jobs, one approval is needed, force-pushes and deletion are blocked.
+# Result: main only changes through a pull request, CI must pass on all four
+# test jobs (3 Node + Rust contract), one approval is needed, force-pushes and deletion are blocked.
 # Admins can still bypass in an emergency (enforce_admins: false).
 set -euo pipefail
 REPO="surety-protocol/surety"
@@ -17,7 +17,8 @@ gh api -X PUT "repos/$REPO/branches/main/protection" --input - <<'JSON'
     "contexts": [
       "Tests (ubuntu-latest, Node 24)",
       "Tests (ubuntu-latest, Node 22)",
-      "Tests (windows-latest, Node 24)"
+      "Tests (windows-latest, Node 24)",
+      "Contract tests (Rust)"
     ]
   },
   "enforce_admins": false,
