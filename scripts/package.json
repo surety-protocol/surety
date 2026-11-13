@@ -1,0 +1,19 @@
+{
+  "name": "surety-scripts",
+  "version": "1.0.0",
+  "description": "Testnet automation scripts for Surety (NEAR Hackathon 2026)",
+  "type": "module",
+  "scripts": {
+    "setup": "node setup-testnet.mjs",
+    "deploy": "node deploy.mjs",
+    "demo": "node demo.mjs"
+  },
+  "dependencies": {
+    "near-api-js": "^5.0.0",
+    "dotenv": "^16.4.5",
+    "bs58": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
