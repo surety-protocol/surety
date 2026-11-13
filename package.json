@@ -12,7 +12,8 @@
     "judge",
     "agents",
     "sim",
-    "web"
+    "web",
+    "scripts"
   ],
   "scripts": {
     "typecheck": "npm run typecheck --workspaces --if-present",
@@ -22,6 +23,10 @@
     "web": "npm run dev -w @surety/web --if-present",
     "setup:testnet": "node scripts/setup-testnet.mjs",
     "deploy": "node scripts/deploy.mjs",
-    "judge-demo": "node scripts/demo.mjs"
+    "testnet:smoke": "node scripts/smoke.mjs",
+    "judge-demo": "node scripts/demo.mjs",
+    "contract:test": "cargo test --workspace",
+    "contract:build": "cargo build --target wasm32-unknown-unknown --release -p surety-core -p tusdc-token",
+    "sim:seeds": "npm run sim:seeds -w @surety/sim --"
   }
 }

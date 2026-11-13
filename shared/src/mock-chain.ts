@@ -54,6 +54,15 @@ export interface MockChainOptions {
   panelId: string;
   config?: Partial<Config>;
   startMs?: number;
+  /**
+   * Experiment switch, not part of SPEC: where the premium goes when an agent has
+   * no backers. "bond" (default, MECHANISM 4.1) credits the agent's own bond;
+   * "reserve" pays it to `reserveId`, so self-dealt jobs cost the agent money.
+   */
+  premiumWithoutBackers?: "bond" | "reserve";
+  reserveId?: string;
+  /** Experiment switch, not part of SPEC: "value/k" (default, MECHANISM 3.1) or "value/k2". */
+  repeatClientWeight?: "value/k" | "value/k2";
 }
 
 const ACTIVE: JobStatus[] = ["Accepted", "Delivered", "Judged", "Appealed"];
@@ -76,6 +85,9 @@ export class MockChain implements SuretyChain {
   readonly tokenId: string;
   readonly judgeId: string;
   readonly panelId: string;
+  readonly premiumWithoutBackers: "bond" | "reserve";
+  readonly reserveId: string;
+  readonly repeatClientWeight: "value/k" | "value/k2";
   readonly config: Config;
   readonly events: ChainEvent[] = [];
 
@@ -91,6 +103,9 @@ export class MockChain implements SuretyChain {
     this.tokenId = opts.tokenId ?? "tusdc.surety.testnet";
     this.judgeId = opts.judgeId;
     this.panelId = opts.panelId;
+    this.premiumWithoutBackers = opts.premiumWithoutBackers ?? "bond";
+    this.reserveId = opts.reserveId ?? "reserve.surety.testnet";
+    this.repeatClientWeight = opts.repeatClientWeight ?? "value/k";
     this.config = { ...DEFAULT_CONFIG, ...opts.config };
     this.clock = opts.startMs ?? Date.UTC(2026, 10, 10, 12, 0, 0);
     if (!isCollusionSafe(priceConfig(this.config))) {
@@ -423,7 +438,9 @@ export class MockChain implements SuretyChain {
       config: priceConfig(this.config),
     });
     // Money: the escrowed value plus any penalty leaves the contract as payouts.
-    a.bond = a.bond - r.from_bond + r.to_bond;
+    const toReserve = this.premiumWithoutBackers === "reserve" ? r.to_bond : 0n;
+    a.bond = a.bond - r.from_bond + r.to_bond - toReserve;
+    this.move(this.contractId, this.reserveId, toReserve);
     if (r.from_pool > 0n) a.backers = applyPoolDelta(a.backers, -r.from_pool);
     if (r.to_pool > 0n) a.backers = applyPoolDelta(a.backers, r.to_pool);
     this.move(this.contractId, a.agent_id, r.to_agent);
@@ -432,7 +449,8 @@ export class MockChain implements SuretyChain {
     const key = `${a.agent_id}|${j.client_id}`;
     const k = (this.pairCounts.get(key) ?? 0) + 1;
     this.pairCounts.set(key, k);
-    const rec = updateRecord(a, jobWeight(j.value, k), score);
+    const weight = this.repeatClientWeight === "value/k2" ? jobWeight(j.value, k * k) : jobWeight(j.value, k);
+    const rec = updateRecord(a, weight, score);
     a.weighted_jobs = rec.weighted_jobs;
     a.weighted_failures = rec.weighted_failures;
     if (r.outcome === "Pass") a.jobs_passed++;

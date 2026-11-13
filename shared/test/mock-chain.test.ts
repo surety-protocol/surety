@@ -321,3 +321,23 @@ test("views and events", async () => {
     assert.ok(names.includes(n), `missing event ${n}`);
   }
 });
+
+test("experiment switches: premium to reserve, value/k^2 (off by default)", async () => {
+  const run = async (opts: { premiumWithoutBackers?: "bond" | "reserve"; repeatClientWeight?: "value/k" | "value/k2" }) => {
+    const c = new MockChain({ judgeId: "judge", panelId: "panel", ...opts });
+    for (const who of ["client", "agent"]) c.mint(who, T(10_000));
+    await newAgent(c, "agent");
+    await runJob(c, { passed: 1, total: 1 });
+    await runJob(c, { passed: 1, total: 1 });
+    return { c, a: (await c.getAgent("agent"))! };
+  };
+  const base = await run({});
+  const premiums = BigInt(base.a.bond) - 100_000_000n; // 3.5 + a lower second premium, into the bond
+  assert.ok(premiums > 0n);
+  assert.equal(base.a.weighted_jobs, "75000000"); // 50 + 50/2
+  const reserve = await run({ premiumWithoutBackers: "reserve" });
+  assert.equal(reserve.a.bond, "100000000");
+  assert.equal(reserve.c.balanceOf("reserve.surety.testnet"), premiums);
+  const k2 = await run({ repeatClientWeight: "value/k2" });
+  assert.equal(k2.a.weighted_jobs, "62500000"); // 50 + 50/4
+});
