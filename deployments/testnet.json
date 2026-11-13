@@ -1,0 +1,24 @@
+{
+  "network": "testnet",
+  "parent": "surety.testnet",
+  "contract_id": "core.surety.testnet",
+  "token_id": "tusdc.surety.testnet",
+  "judge_id": "judge.surety.testnet",
+  "panel_id": "panel.surety.testnet",
+  "accounts": {
+    "core": "core.surety.testnet",
+    "tusdc": "tusdc.surety.testnet",
+    "judge": "judge.surety.testnet",
+    "panel": "panel.surety.testnet",
+    "client": "client.surety.testnet",
+    "honest_agent": "honest-agent.surety.testnet",
+    "sloppy_agent": "sloppy-agent.surety.testnet",
+    "cheater_agent": "cheater-agent.surety.testnet",
+    "fake_client_1": "fake-client-1.surety.testnet",
+    "fake_client_2": "fake-client-2.surety.testnet",
+    "fake_client_3": "fake-client-3.surety.testnet",
+    "backer": "backer.surety.testnet"
+  },
+  "setup_at": "2026-11-13T13:02:59.281Z",
+  "deployed_at": "2026-11-13T13:04:13.777Z"
+}
