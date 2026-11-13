@@ -102,7 +102,8 @@ test("ecdsa (EIP-191) provider_tee signature verifies and must match exactly one
   const report = { signing_address: w.address.toLowerCase(), signing_algo: "ecdsa", tcb_status: "x", advisory_ids: [], gpu: "verified" as const, checks: [] };
   assert.deepEqual(verifyResponseSignature(sig, "m", req, res, [report]), { ok: true });
   assert.equal(verifyResponseSignature(sig, "m", req, res, []).ok, false, "no matching report");
-  assert.equal(verifyResponseSignature(sig, "m", req, res, [report, report]).ok, false, "ambiguous match");
+  // Replicas: several verified reports attesting the same key (seen for GLM on testnet job 9).
+  assert.deepEqual(verifyResponseSignature(sig, "m", req, res, [report, report, report]), { ok: true }, "replicas of the same key");
   assert.equal(verifyResponseSignature(sig, "m", req, Buffer.from(res.toString() + " "), [report]).ok, false, "one changed byte");
   assert.equal(verifyResponseSignature(sig, "other", req, res, [report]).ok, false, "different model id");
   assert.equal(verifyResponseSignature({ ...sig, signature_kind: "gateway" }, "m", req, res, [report]).ok, false, "gateway kind");

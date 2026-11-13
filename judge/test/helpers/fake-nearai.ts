@@ -17,6 +17,8 @@ export type Behaviour =
   | "bad-json-once" // first reply is not JSON, second is honest
   | "bad-json-always"
   | "long-reasoning" // reasons for ~2000 tokens first: cut off (no content) under a smaller max_tokens
+  | "overloaded-once" // first completion gets 429 service_overloaded, then answers honestly
+  | "overloaded-always" // every completion gets 429
   | "wrong-signature" // signs with another key
   | "tampered-response" // signs a different response body
   | "gateway-signature" // signature_kind "gateway"
@@ -86,6 +88,7 @@ export function fakeNearAi(behaviour: Record<string, Behaviour>): FakeNearAi {
   const walletFor = (m: string) => wallets.get(m) ?? (wallets.set(m, Wallet.createRandom()), wallets.get(m)!);
   const completions = new Map<string, { model: string; req: Buffer; res: Buffer }>();
   const replies = new Map<string, number>();
+  const overloads = new Map<string, number>();
   const calls = { completions: 0, signatures: 0, attestations: 0 };
   let counter = 0;
 
@@ -131,6 +134,12 @@ export function fakeNearAi(behaviour: Record<string, Behaviour>): FakeNearAi {
       calls.completions++;
       const req = Buffer.from(init!.body as Uint8Array);
       const body = JSON.parse(req.toString("utf8")) as { model: string; max_tokens?: number; messages: { content: string }[] };
+      const ob = behaviour[body.model];
+      const tries = (overloads.get(body.model) ?? 0) + 1;
+      overloads.set(body.model, tries);
+      if (ob === "overloaded-always" || (ob === "overloaded-once" && tries === 1)) {
+        return json({ error: { message: "The service is temporarily overloaded. Please retry with exponential backoff.", type: "service_overloaded" } }, 429);
+      }
       const id = `chatcmpl-${++counter}`;
       const cutOff = behaviour[body.model] === "long-reasoning" && (body.max_tokens ?? Infinity) < 2000;
       const choice = cutOff

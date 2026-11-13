@@ -119,6 +119,25 @@ test("a reply cut off by the token limit is reported as such", async () => {
   assert.ok(v.problems.some((x) => /ran out of tokens/.test(x)), JSON.stringify(v.problems));
 });
 
+// Seen on testnet (job 9): DeepSeek got 429 service_overloaded and its vote was lost.
+test("an overloaded judge is retried with backoff and still counts", async () => {
+  const { panel: p, fake } = panel({ [MODELS[0]!]: "overloaded-once" });
+  const out = await p.judge(ctx("honest-login-bug.diff", true), aiChecks);
+  const v = out.results[0]!.votes.find((x) => x.model === MODELS[0])!;
+  assert.equal(v.pass, true, v.problems.join("; "));
+  assert.equal(v.signature_verified, true);
+  assert.equal(fake.calls.completions, 7); // 6 votes + 1 retried 429
+});
+
+test("a judge that stays overloaded gives up with a clear reason", async () => {
+  const { panel: p } = panel({ [MODELS[0]!]: "overloaded-always" });
+  const out = await p.judge(ctx("honest-login-bug.diff", true), aiChecks);
+  const v = out.results[0]!.votes.find((x) => x.model === MODELS[0])!;
+  assert.equal(v.pass, false);
+  assert.ok(v.problems.some((x) => /429.*gave up after 4 tries/s.test(x)), JSON.stringify(v.problems));
+  assert.equal(out.results[0]!.pass, true, "the other two verified judges still carry the check");
+});
+
 test("receipts keep exact bytes and the full report, never the API key", async () => {
   const { panel: p } = panel({});
   const out = await p.judge(ctx("honest-login-bug.diff", true), aiChecks);
