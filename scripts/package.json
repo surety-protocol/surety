@@ -1,0 +1,13 @@
+{
+  "name": "@surety/scripts",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Testnet setup, deploy, smoke test and demo for Surety. Run them from the repo root (npm run setup:testnet, deploy, testnet:smoke, judge-demo).",
+  "type": "module",
+  "scripts": {
+    "typecheck": "node --check lib/near.mjs && node --check setup-testnet.mjs && node --check deploy.mjs && node --check smoke.mjs && node --check demo.mjs"
+  },
+  "dependencies": {
+    "near-api-js": "^7.4.0"
+  }
+}
