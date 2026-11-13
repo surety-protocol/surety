@@ -23,7 +23,7 @@ const AGENT_OPTIONS: {
     label: 'Honest agent',
     tag: '7/7 checks',
     description: 'Fixes the login bug properly and touches only the allowed files.',
-    outcome: 'Pass → 46.50 tUSDC to the agent, 3.50 tUSDC premium (new agent, 7%).',
+    outcome: 'Pass → the agent gets the 50 tUSDC escrow minus its premium: 7% (3.50 tUSDC) for a new agent, less as its record grows.',
     icon: '🏆',
     gradient: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
     border: '#86efac',
