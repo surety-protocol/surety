@@ -1,0 +1,117 @@
+{
+  "job_id": 9,
+  "spec_hash": "e9ab11b6a93b80129338925b1aa4de677bd8f5bab0351a658c9cc72c13003262",
+  "patch_hash": "2623bd9e378e15e7e7af46fac244bbe49b07dbf55944e11afa6469bb67335f80",
+  "checks": [
+    {
+      "id": "t1",
+      "type": "test",
+      "name": "rejects empty password",
+      "pass": true
+    },
+    {
+      "id": "t2",
+      "type": "test",
+      "name": "accepts valid password",
+      "pass": true
+    },
+    {
+      "id": "t3",
+      "type": "test",
+      "name": "returns EMPTY_PASSWORD code",
+      "pass": true
+    },
+    {
+      "id": "t4",
+      "type": "test",
+      "name": "locks after 5 failed attempts",
+      "pass": true
+    },
+    {
+      "id": "t5",
+      "type": "test",
+      "name": "existing session tests still pass",
+      "pass": true
+    },
+    {
+      "id": "a1",
+      "type": "ai",
+      "question": "Did the patch change only files under src/auth/?",
+      "pass": false,
+      "votes": [
+        {
+          "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+          "pass": false,
+          "reason": "no valid answer",
+          "attestation_verified": true,
+          "signature_verified": false,
+          "problems": [
+            "attempt 1: The operation was aborted due to timeout",
+            "attempt 2: completion failed (429): {\"error\":{\"message\":\"The service is temporarily overloaded. Please retry with exponential backoff.\",\"type\":\"service_overloaded\",\"param\":null,\"code\":null}}"
+          ]
+        },
+        {
+          "model": "z-ai/glm-5.3-flash",
+          "pass": true,
+          "reason": "The diff modifies only src/auth/login.js, which is within the allowed src/auth/ path; no other files are touched.",
+          "attestation_verified": true,
+          "signature_verified": false,
+          "problems": [
+            "signature: signer matches 3 verified model reports, need exactly 1"
+          ]
+        },
+        {
+          "model": "Qwen/Qwen3.8-27B",
+          "pass": true,
+          "reason": "The patch only modifies src/auth/login.js, which is under src/auth/.",
+          "attestation_verified": true,
+          "signature_verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "id": "a2",
+      "type": "ai",
+      "question": "Does the patch do what the description asks, without unrelated changes?",
+      "pass": false,
+      "votes": [
+        {
+          "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+          "pass": false,
+          "reason": "no valid answer",
+          "attestation_verified": true,
+          "signature_verified": false,
+          "problems": [
+            "attempt 1: fetch failed",
+            "attempt 2: completion failed (429): {\"error\":{\"message\":\"The service is temporarily overloaded. Please retry with exponential backoff.\",\"type\":\"service_overloaded\",\"param\":null,\"code\":null}}"
+          ]
+        },
+        {
+          "model": "z-ai/glm-5.3-flash",
+          "pass": true,
+          "reason": "The patch adds an EMPTY_PASSWORD rejection before password comparison, keeps the lockout check first and unchanged (empty attempts never counted toward failures before or after), and the removal of the now-redundant `password &&` guard is a directly related cleanup; only src/auth/login.js within allowed paths was modified, and all tests including lockout and session tests pass.",
+          "attestation_verified": true,
+          "signature_verified": false,
+          "problems": [
+            "signature: signer matches 3 verified model reports, need exactly 1"
+          ]
+        },
+        {
+          "model": "Qwen/Qwen3.8-27B",
+          "pass": true,
+          "reason": "It adds an early EMPTY_PASSWORD rejection for empty passwords before password comparison, while preserving the existing lockout check and session flow. The removed `password &&` guard is redundant after the new empty-password check.",
+          "attestation_verified": true,
+          "signature_verified": true,
+          "problems": []
+        }
+      ]
+    }
+  ],
+  "checks_passed": 5,
+  "checks_total": 7,
+  "score_bps": 7142,
+  "isolation": "tempdir",
+  "problems": [],
+  "judged_at_ms": 1794602727079
+}
