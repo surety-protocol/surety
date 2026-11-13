@@ -105,8 +105,15 @@ export interface NearAiPanelOptions {
   policy?: AttestationPolicy;
   verifyQuote: QuoteVerifier;
   verifyGpu: GpuVerifier | null;
+  /**
+   * Completion token budget per vote. The judge models reason before they
+   * answer, and the reasoning counts against this limit: at 600 tokens GLM and
+   * Qwen ran out mid-thought on longer questions and returned no answer.
+   */
   maxTokens?: number;
 }
+
+export const DEFAULT_MAX_TOKENS = 4096;
 
 export class NearAiPanel implements AiPanel {
   readonly verified = true;
@@ -168,13 +175,14 @@ export class NearAiPanel implements AiPanel {
       const a: Record<string, unknown> = {};
       (entry.attempts as unknown[]).push(a);
       try {
-        const body = { model, messages: buildMessages(ctx, check), temperature: 0, max_tokens: this.o.maxTokens ?? 600, stream: false };
+        const body = { model, messages: buildMessages(ctx, check), temperature: 0, max_tokens: this.o.maxTokens ?? DEFAULT_MAX_TOKENS, stream: false };
         const c = await this.o.client.chatCompletion(body);
         a.request = c.requestBytes.toString("utf8");
         a.response = c.responseBytes.toString("utf8");
         answer = parseAnswer(c.json.choices?.[0]?.message?.content);
         if (!answer) {
-          problems.push(`attempt ${attempt + 1}: reply was not the required JSON`);
+          const cutOff = c.json.choices?.[0]?.finish_reason === "length";
+          problems.push(`attempt ${attempt + 1}: ${cutOff ? "ran out of tokens before answering" : "reply was not the required JSON"}`);
           continue;
         }
         if (!c.json.id) throw new Error("completion has no id");

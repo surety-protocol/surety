@@ -1,0 +1,19 @@
+{
+  "job_id": 6,
+  "spec_hash": "f2d424a95b3867e73137b74886bfaf6fce4e6d701bd1d00c1c04e749a6ffa03d",
+  "patch_hash": "3506047ef4f74225a63fc57532938f83b5b5607566820f392356af91c193c463",
+  "checks": [
+    {
+      "id": "t2",
+      "type": "test",
+      "name": "accepts valid password",
+      "pass": true
+    }
+  ],
+  "checks_passed": 1,
+  "checks_total": 1,
+  "score_bps": 10000,
+  "isolation": "tempdir",
+  "problems": [],
+  "judged_at_ms": 1794580231667
+}

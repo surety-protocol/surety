@@ -41,8 +41,10 @@ export function signatureValid(text: string, signature: string, address: string,
 
 /**
  * Accept a completion only if: the signature is provider_tee, its text matches
- * our exact bytes, it is valid, and its signer matches exactly one verified
- * model report (same address and algorithm).
+ * our exact bytes, it is valid, and its signer matches at least one verified
+ * model report (same address and algorithm). Every report passed in was already
+ * verified for this model, so several matches are replicas of the same attested
+ * key (NEAR AI returned 3 for GLM on testnet job 9), not an ambiguity.
  */
 export function verifyResponseSignature(
   sig: SignatureRecord,
@@ -58,6 +60,6 @@ export function verifyResponseSignature(
   const matches = verifiedModels.filter(
     (m) => m.signing_algo === sig.signing_algo && m.signing_address.toLowerCase() === sig.signing_address.toLowerCase(),
   );
-  if (matches.length !== 1) return { ok: false, reason: `signer matches ${matches.length} verified model reports, need exactly 1` };
+  if (matches.length === 0) return { ok: false, reason: "signer matches no verified model report" };
   return { ok: true };
 }

@@ -9,13 +9,18 @@ export type Fetcher = typeof fetch;
 export interface RawCompletion {
   requestBytes: Buffer;
   responseBytes: Buffer;
-  json: { id?: string; choices?: { message?: { content?: string | null; reasoning_content?: string | null } }[] };
+  json: { id?: string; choices?: { finish_reason?: string | null; message?: { content?: string | null; reasoning_content?: string | null } }[] };
 }
 
 export class NearAiError extends Error {
-  constructor(message: string) {
+  /** Worth retrying: overload (429), server error (5xx), timeout or dropped connection. */
+  readonly transient: boolean;
+  readonly retryAfterMs: number | undefined;
+  constructor(message: string, opts: { transient?: boolean; retryAfterMs?: number } = {}) {
     super(message);
     this.name = "NearAiError";
+    this.transient = opts.transient ?? false;
+    this.retryAfterMs = opts.retryAfterMs;
   }
 }
 
@@ -38,8 +43,28 @@ export class NearAiClient {
     return (await res.json()) as AttestationBundle;
   }
 
-  async chatCompletion(body: Record<string, unknown>): Promise<RawCompletion> {
+  /**
+   * One completion. When NEAR AI is overloaded (429), errors (5xx) or the call
+   * times out or drops, wait and try again with exponential backoff (2, 4, 8 s,
+   * or the server's Retry-After), up to `attempts` tries in all.
+   */
+  async chatCompletion(body: Record<string, unknown>, attempts = 4): Promise<RawCompletion> {
     if (!this.apiKey) throw new NearAiError("NEARAI_API_KEY is not set");
+    let last: NearAiError | null = null;
+    for (let i = 0; i < attempts; i++) {
+      try {
+        return await this.chatCompletionOnce(body);
+      } catch (e) {
+        const err = e instanceof NearAiError ? e : new NearAiError(`completion request failed: ${(e as Error).message}`);
+        if (!err.transient) throw err;
+        last = err;
+        if (i < attempts - 1) await this.sleep(err.retryAfterMs ?? 2000 * 2 ** i);
+      }
+    }
+    throw new NearAiError(`${last!.message} (gave up after ${attempts} tries)`);
+  }
+
+  private async chatCompletionOnce(body: Record<string, unknown>): Promise<RawCompletion> {
     const requestBytes = Buffer.from(JSON.stringify(body), "utf8");
     const res = await this.fetcher(`${this.baseUrl}/chat/completions`, {
       method: "POST",
@@ -51,10 +76,21 @@ export class NearAiClient {
         "x-no-aliasing": "true",
       },
       body: requestBytes,
-      signal: AbortSignal.timeout(120_000),
+      // The judges reason before answering; a 4096-token reply can take minutes.
+      signal: AbortSignal.timeout(180_000),
+    }).catch((e: Error) => {
+      // Timeouts and dropped connections are worth another try.
+      throw new NearAiError(`completion request failed: ${e.message}`, { transient: true });
     });
     const responseBytes = Buffer.from(await res.arrayBuffer());
-    if (!res.ok) throw new NearAiError(`completion failed (${res.status}): ${responseBytes.toString("utf8").slice(0, 300)}`);
+    if (!res.ok) {
+      const transient = res.status === 429 || res.status >= 500;
+      const ra = Number(res.headers.get("retry-after"));
+      throw new NearAiError(`completion failed (${res.status}): ${responseBytes.toString("utf8").slice(0, 300)}`, {
+        transient,
+        retryAfterMs: Number.isFinite(ra) && ra > 0 ? Math.min(ra, 30) * 1000 : undefined,
+      });
+    }
     let json: RawCompletion["json"];
     try {
       json = JSON.parse(responseBytes.toString("utf8"));

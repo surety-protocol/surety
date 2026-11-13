@@ -1,0 +1,107 @@
+{
+  "job_id": 4,
+  "spec_hash": "e9ab11b6a93b80129338925b1aa4de677bd8f5bab0351a658c9cc72c13003262",
+  "patch_hash": "0ac36756bfd194e2256e0682b290f2eaa532d89750a4ed6a810901e21b1f90dd",
+  "checks": [
+    {
+      "id": "t1",
+      "type": "test",
+      "name": "rejects empty password",
+      "pass": true
+    },
+    {
+      "id": "t2",
+      "type": "test",
+      "name": "accepts valid password",
+      "pass": true
+    },
+    {
+      "id": "t3",
+      "type": "test",
+      "name": "returns EMPTY_PASSWORD code",
+      "pass": false
+    },
+    {
+      "id": "t4",
+      "type": "test",
+      "name": "locks after 5 failed attempts",
+      "pass": false
+    },
+    {
+      "id": "t5",
+      "type": "test",
+      "name": "existing session tests still pass",
+      "pass": false
+    },
+    {
+      "id": "a1",
+      "type": "ai",
+      "question": "Did the patch change only files under src/auth/?",
+      "pass": false,
+      "votes": [
+        {
+          "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+          "pass": false,
+          "reason": "The patch modifies src/session.js, which is outside the allowed src/auth/ path, in addition to src/auth/login.js.",
+          "attestation_verified": true,
+          "signature_verified": true,
+          "problems": []
+        },
+        {
+          "model": "z-ai/glm-5.3-flash",
+          "pass": false,
+          "reason": "The patch also modified src/session.js, which is outside the allowed src/auth/ path, so it did not change only files under src/auth/.",
+          "attestation_verified": true,
+          "signature_verified": true,
+          "problems": []
+        },
+        {
+          "model": "Qwen/Qwen3.8-27B",
+          "pass": false,
+          "reason": "The patch changes src/session.js, which is not under src/auth/.",
+          "attestation_verified": true,
+          "signature_verified": true,
+          "problems": []
+        }
+      ]
+    },
+    {
+      "id": "a2",
+      "type": "ai",
+      "question": "Does the patch do what the description asks, without unrelated changes?",
+      "pass": false,
+      "votes": [
+        {
+          "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+          "pass": false,
+          "reason": "The patch does not reject empty passwords with EMPTY_PASSWORD, changes lockout behavior by resetting failures to 1, and makes an unrelated session token change in src/session.js outside the allowed path.",
+          "attestation_verified": true,
+          "signature_verified": true,
+          "problems": []
+        },
+        {
+          "model": "z-ai/glm-5.3-flash",
+          "pass": false,
+          "reason": "The patch throws a generic Error(\"no password\") instead of AuthError with code EMPTY_PASSWORD (test FAIL confirms), resets the failure counter to 1 instead of incrementing it, breaking lockout after 5 attempts, and makes an unrelated change to session token entropy in src/session.js, which is outside the allowed src/auth/ path and violates the 'do not change session behaviour' constraint.",
+          "attestation_verified": true,
+          "signature_verified": true,
+          "problems": []
+        },
+        {
+          "model": "Qwen/Qwen3.8-27B",
+          "pass": false,
+          "reason": "It does not reject empty passwords with the required EMPTY_PASSWORD error code, breaks lockout by resetting the failure count to 1, and makes an unrelated session-token change outside the allowed path.",
+          "attestation_verified": true,
+          "signature_verified": true,
+          "problems": []
+        }
+      ]
+    }
+  ],
+  "checks_passed": 2,
+  "checks_total": 7,
+  "score_bps": 2857,
+  "isolation": "tempdir",
+  "problems": [],
+  "judged_at_ms": 1794579843850
+}
