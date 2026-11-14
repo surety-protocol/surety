@@ -158,9 +158,15 @@ export async function fetchOverview(): Promise<OverviewStats> {
 
 const DEMO_API = import.meta.env.VITE_DEMO_API_URL ?? 'http://localhost:8787';
 
-/** URL of a published receipt file (SPEC section 7: GET /receipts/:job_id/:file). */
+/**
+ * Where receipt files live. Locally the judge serves them (SPEC section 7:
+ * GET /receipts/:job_id/:file). The hosted build ships a copy of the committed
+ * receipts as static files and sets VITE_RECEIPTS_BASE=/receipts.
+ */
+const RECEIPTS_BASE = import.meta.env.VITE_RECEIPTS_BASE ?? `${DEMO_API}/receipts`;
+
 export function receiptUrl(job_id: number, file: string): string {
-  return `${DEMO_API}/receipts/${job_id}/${encodeURIComponent(file)}`;
+  return `${RECEIPTS_BASE}/${job_id}/${encodeURIComponent(file)}`;
 }
 
 /** The judge's verdict.json for a job (SPEC section 6). */

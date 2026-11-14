@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { CheckCircle2, XCircle, Clock, Loader2, ArrowRight, Zap, AlertTriangle, Trophy } from 'lucide-react';
-import { startDemoRun, pollDemoStatus } from '../lib/demo';
+import { startDemoRun, pollDemoStatus, demoApiAvailable } from '../lib/demo';
 import { Card } from '../components/Card';
 import type { DemoScenario, DemoRun, DemoStep } from '../shared/types';
 
@@ -17,6 +17,8 @@ const AGENT_OPTIONS: {
   gradient: string;
   border: string;
   tagColor: string;
+  /** A real testnet job of this scenario, judged by the three NEAR AI models. */
+  recorded: number;
 }[] = [
   {
     type: 'honest',
@@ -28,6 +30,7 @@ const AGENT_OPTIONS: {
     gradient: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
     border: '#86efac',
     tagColor: '#15803d',
+    recorded: 7,
   },
   {
     type: 'sloppy',
@@ -39,6 +42,7 @@ const AGENT_OPTIONS: {
     gradient: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)',
     border: '#fcd34d',
     tagColor: '#b45309',
+    recorded: 4,
   },
   {
     type: 'cheater',
@@ -50,6 +54,7 @@ const AGENT_OPTIONS: {
     gradient: 'linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%)',
     border: '#fca5a5',
     tagColor: '#b91c1c',
+    recorded: 6,
   },
 ];
 
@@ -113,6 +118,10 @@ export function TryIt() {
   const [error, setError]     = useState<string | null>(null);
   const [selected, setSelected] = useState<DemoScenario | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  // null = still checking. The judge API runs next to the judge service, so on the
+  // hosted site it is usually unreachable: then each card opens its recorded real run.
+  const [apiUp, setApiUp] = useState<boolean | null>(null);
+  useEffect(() => { void demoApiAvailable().then(setApiUp); }, []);
 
   useEffect(() => {
     if (run?.status === 'done' || run?.status === 'error') {
@@ -159,25 +168,26 @@ export function TryIt() {
         </p>
       </div>
 
+      {apiUp === false && (
+        <div className="rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900">
+          <p className="font-semibold">Live runs need the judge service, which isn't reachable from this site.</p>
+          <p className="mt-1 text-blue-800">
+            Each scenario below opens a real run that already settled on testnet, with every check, all three AI
+            judges' votes and their TEE attestation receipts. To start a new run yourself, run{' '}
+            <code className="rounded bg-white/70 px-1">npm run judge</code> and{' '}
+            <code className="rounded bg-white/70 px-1">npm run web</code> from the repo (see the README).
+          </p>
+        </div>
+      )}
+
       {/* Agent selector */}
       <section>
         <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Choose a scenario</h2>
         <div className="grid gap-4 sm:grid-cols-3">
           {AGENT_OPTIONS.map((a) => {
             const isActive = selected === a.type && (loading || !!run);
-            return (
-              <button
-                key={a.type}
-                onClick={() => handleStart(a.type)}
-                disabled={loading}
-                style={{
-                  background: a.gradient,
-                  border: `2px solid ${isActive ? a.border : 'transparent'}`,
-                  boxShadow: isActive ? `0 0 0 4px ${a.border}40` : undefined,
-                }}
-                className="text-left rounded-xl p-5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-                aria-pressed={isActive}
-              >
+            const body = (
+              <>
                 <div className="flex items-start justify-between mb-3">
                   <span className="text-2xl" role="img">{a.icon}</span>
                   <span className="text-[11px] font-bold rounded-full px-2.5 py-0.5"
@@ -192,6 +202,36 @@ export function TryIt() {
                   <span className="font-medium text-slate-500">Expected: </span>
                   <span className="text-slate-700">{a.outcome}</span>
                 </div>
+                {apiUp === false && (
+                  <p className="mt-3 text-xs font-semibold" style={{ color: a.tagColor }}>
+                    See the real run, job #{a.recorded} →
+                  </p>
+                )}
+              </>
+            );
+            if (apiUp === false) {
+              return (
+                <Link key={a.type} to={`/jobs/${a.recorded}`}
+                  style={{ background: a.gradient, border: '2px solid transparent' }}
+                  className="block text-left rounded-xl p-5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                  {body}
+                </Link>
+              );
+            }
+            return (
+              <button
+                key={a.type}
+                onClick={() => handleStart(a.type)}
+                disabled={loading || apiUp === null}
+                style={{
+                  background: a.gradient,
+                  border: `2px solid ${isActive ? a.border : 'transparent'}`,
+                  boxShadow: isActive ? `0 0 0 4px ${a.border}40` : undefined,
+                }}
+                className="text-left rounded-xl p-5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                aria-pressed={isActive}
+              >
+                {body}
               </button>
             );
           })}
