@@ -47,16 +47,22 @@ function RecordBar({ agent }: { agent: AgentView }) {
   );
 }
 
-function PremiumBadge({ bps }: { bps: number }) {
-  const pct = bps / 100;
+/**
+ * Colour = price level against a new agent's 7% (MECHANISM.md 3.3): green below
+ * it, amber up to 9%, red above. Arrow = where this agent's premium has moved.
+ */
+function PremiumBadge({ bps, history }: { bps: number; history: { premium_bps: number }[] }) {
   const [color, bg, border] =
-    pct < 2   ? ['#15803d', '#f0fdf4', '#bbf7d0'] :
-    pct < 5   ? ['#b45309', '#fffbeb', '#fde68a'] :
-                ['#b91c1c', '#fef2f2', '#fecaca'];
+    bps < 700 ? ['#15803d', '#f0fdf4', '#bbf7d0'] :
+    bps <= 900 ? ['#b45309', '#fffbeb', '#fde68a'] :
+                 ['#b91c1c', '#fef2f2', '#fecaca'];
+  const first = history.length ? history[0].premium_bps : bps;
+  const Arrow = bps < first ? TrendingDown : bps > first ? TrendingUp : null;
   return (
     <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold tabular-nums"
-      style={{ color, backgroundColor: bg, border: `1px solid ${border}` }}>
-      {pct < 2 ? <TrendingDown className="h-3 w-3" /> : <TrendingUp className="h-3 w-3" />}
+      style={{ color, backgroundColor: bg, border: `1px solid ${border}` }}
+      title={Arrow ? `was ${formatBps(first)} on its first settled job` : undefined}>
+      {Arrow && <Arrow className="h-3 w-3" />}
       {formatBps(bps)}
     </span>
   );
@@ -94,7 +100,7 @@ function AgentRow({ agent, rank }: { agent: AgentView; rank: number }) {
         <RecordBar agent={agent} />
       </td>
       <td className="py-3.5 pr-4">
-        <PremiumBadge bps={agent.premium_bps} />
+        <PremiumBadge bps={agent.premium_bps} history={agent.price_history ?? []} />
       </td>
       <td className="py-3.5 pr-5 hidden lg:table-cell">
         <Sparkline data={agent.price_history ?? []} />

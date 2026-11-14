@@ -9,7 +9,8 @@
     "typecheck": "tsc -b",
     "lint": "eslint .",
     "preview": "vite preview",
-    "mock:data": "node --import tsx scripts/make-mock.ts"
+    "mock:data": "node --import tsx scripts/make-mock.ts",
+    "build:hosted": "node scripts/copy-receipts.mjs && tsc -b && vite build --mode hosted"
   },
   "dependencies": {
     "@surety/shared": "*",

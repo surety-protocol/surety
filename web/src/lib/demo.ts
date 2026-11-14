@@ -87,6 +87,17 @@ async function advanceMockRun(key: number, scenario: DemoScenario) {
 // ─── Public API ───────────────────────────────────────────────────────────────
 
 /** Start a run. Poll pollDemoStatus() for progress. */
+/** True when the judge's demo API answers (it runs next to the judge, not on the hosted site). */
+export async function demoApiAvailable(): Promise<boolean> {
+  if (USE_MOCK) return true;
+  try {
+    const res = await fetch(`${DEMO_API}/health`, { signal: AbortSignal.timeout(2500) });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
 export async function startDemoRun(scenario: DemoScenario): Promise<DemoRun> {
   if (USE_MOCK) {
     const key = -++mockCounter; // negative ids never collide with real jobs

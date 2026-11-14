@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Receipts copied in by scripts/copy-receipts.mjs for the hosted build
+public/receipts
